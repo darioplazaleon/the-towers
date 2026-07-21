@@ -1,9 +1,12 @@
 package org.nanii.minigame.listener;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.nanii.minigame.GameState;
@@ -51,8 +54,42 @@ public class GameListener implements Listener {
         if (arena == null || arena.getState() != GameState.LIVE) return;
 
         Team team = arena.getTeam(player.getUniqueId());
-        if (team != null) return;
+        if (team == null) return;
 
         e.setRespawnLocation(arena.getTeamSpawn(team));
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player victim)) return;
+
+        Player attacker = resolveAttacker(e.getDamager());
+        if (attacker == null) return;
+
+        if (attacker.equals(victim)) return;
+
+        Arena arena = minigame.getArenaManager().getArena(victim);
+        if (arena == null || arena.getState() != GameState.LIVE) return;
+        if (minigame.getArenaManager().getArena(attacker) != arena) return;
+
+        Team victimTeam = arena.getTeam(victim.getUniqueId());
+        Team attackerTeam = arena.getTeam(attacker.getUniqueId());
+        if (victimTeam == null || attackerTeam == null) return;
+
+        if (victimTeam == attackerTeam) {
+            e.setCancelled(true);
+        }
+    }
+
+
+    private Player resolveAttacker(Entity damager) {
+        if (damager instanceof Player p) {
+            return p;
+        }
+
+        if (damager instanceof Projectile proj && proj.getShooter() instanceof Player shooter) {
+            return shooter;
+        }
+        return null;
     }
 }
