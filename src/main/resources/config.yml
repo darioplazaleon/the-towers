@@ -1,0 +1,85 @@
+required-points: 10
+required-players: 2
+countdown-seconds: 30
+# Lobby principal
+lobby:
+  world: world
+  x: -596.38
+  y: 81
+  z: 344
+  yaw: 0
+  pitch: 0
+# Arenas
+arenas:
+  0:
+    # Sala de espera en el mapa
+    wait-room:
+      world: towers-copy
+      x: 93.74
+      y: 193
+      z: -47.87
+      yaw: -180
+      pitch: 0
+    # Spawn de los equipos
+    team-spawns:
+      red:
+        world: towers-copy
+        x: 174.23
+        y: 192
+        z: 66.66
+        yaw: 90
+        pitch: 0
+      blue:
+        world: towers-copy
+        x: 6.78
+        y: 192
+        z: 66.50
+        yaw: -90
+        pitch: 0
+      # Zona de puntos de control
+    point-zones:
+      blue:
+        world: towers-copy
+        x: 6.58
+        y: 200
+        z: 174.45
+        radius: 1
+        height: 3
+      red:
+        world: towers-copy
+        x: 174.45
+        y: 200
+        z: 66.50
+        radius: 1
+        height: 3
+      # Generadores de recursos
+    generators:
+      iron:
+        interval: 120
+        amount: 1
+        locations:
+          0: {
+            world: towers-copy,
+            x: 90.58,
+            y: 206,
+            z: 90.3
+          }
+          1: {
+            world: towers-copy,
+            x: 90.3,
+            y: 206,
+            z: 80.49
+          }
+      xp:
+        interval: 200
+        amount: 1
+        locations:
+          0: {
+            world: towers-copy,
+            x: 9.47,
+            y: 204.2,
+            z: 66.54
+          }
+
+
+
