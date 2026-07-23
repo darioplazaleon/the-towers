@@ -42,7 +42,7 @@ arenas:
         world: towers-copy
         x: 6.58
         y: 200
-        z: 174.45
+        z: 66.5
         radius: 1
         height: 3
       red:
