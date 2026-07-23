@@ -76,7 +76,7 @@ arenas:
         locations:
           0: {
             world: towers-copy,
-            x: 9.47,
+            x: 90.47,
             y: 204.2,
             z: 66.54
           }
