@@ -64,6 +64,7 @@ public class Arena {
     }
 
     public void reset(boolean kickPlayers) {
+        game.stop();
         stopGenerators();
         if (kickPlayers) {
             for (UUID uuid : players) {
@@ -178,6 +179,8 @@ public class Arena {
     public void stopGenerators() {
         for (Generator g : generators) g.stop();
     }
+
+    public Minigame getMinigame() {return minigame;}
     //TEAMS
 
     public void setTeam(Player player, Team team) {

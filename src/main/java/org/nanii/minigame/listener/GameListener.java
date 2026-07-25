@@ -7,6 +7,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.nanii.minigame.GameState;
@@ -78,6 +79,21 @@ public class GameListener implements Listener {
 
         if (victimTeam == attackerTeam) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        Player victim = e.getEntity();
+
+        Arena arena = minigame.getArenaManager().getArena(victim);
+        if (arena == null || arena.getState() != GameState.LIVE) return;
+
+        arena.getGame().addDeath(victim);
+
+        Player killer = victim.getKiller();
+        if (killer != null && !killer.equals(victim) && minigame.getArenaManager().getArena(killer) == arena) {
+            arena.getGame().addKill(killer);
         }
     }
 
