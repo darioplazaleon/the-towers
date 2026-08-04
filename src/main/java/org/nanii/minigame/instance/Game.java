@@ -133,7 +133,7 @@ public class Game {
         int row = 2;
         for (UUID id : arena.getPlayers()) {
             if (row >= TabBoard.ROWS) break;
-            if (arena.getTeam(id) != team) break;
+            if (arena.getTeam(id) != team) continue;
 
             Player p = Bukkit.getPlayer(id);
             if (p == null) continue;
