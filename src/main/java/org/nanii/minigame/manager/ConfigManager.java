@@ -36,6 +36,10 @@ public class ConfigManager {
         return config.getInt("countdown-seconds");
     }
 
+    public static int getEndDelaySeconds() {
+        return config.getInt("end-delay-seconds", 10);
+    }
+
     public static Location getLobby() {
         return getLocation("lobby");
     }

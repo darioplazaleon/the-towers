@@ -74,7 +74,7 @@ public class Arena {
 
         sendTitle("", "");
 
-        if (previous == GameState.LIVE) {
+        if (previous == GameState.LIVE || previous == GameState.ENDING) {
             Location lobby = ConfigManager.getLobby();
             for (UUID uuid : players) {
                 Player player = Bukkit.getPlayer(uuid);
@@ -117,6 +117,15 @@ public class Arena {
         }
     }
 
+    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        for (UUID uuid : players) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+            }
+        }
+    }
+
     //PLAYERS
 
     public void addPlayer(Player player) {
@@ -134,7 +143,7 @@ public class Arena {
     }
 
     public void removePlayer(Player player) {
-        if (state == GameState.LIVE) {
+        if (state == GameState.LIVE || state == GameState.ENDING) {
             game.removeViewer(player);
         }
 
@@ -208,8 +217,8 @@ public class Arena {
     public Minigame getMinigame() {
         return minigame;
     }
-    //TEAMS
 
+    //TEAMS
     public void setTeam(Player player, Team team) {
         removeTeam(player);
         teams.put(player.getUniqueId(), team);

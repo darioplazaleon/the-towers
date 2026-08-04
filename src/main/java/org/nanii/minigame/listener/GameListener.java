@@ -52,7 +52,7 @@ public class GameListener implements Listener {
         Player player = e.getPlayer();
 
         Arena arena = minigame.getArenaManager().getArena(player);
-        if (arena == null || arena.getState() != GameState.LIVE) return;
+        if (arena == null || (arena.getState() != GameState.LIVE && arena.getState() != GameState.ENDING)) return;
 
         Team team = arena.getTeam(player.getUniqueId());
         if (team == null) return;
@@ -70,7 +70,7 @@ public class GameListener implements Listener {
         if (attacker.equals(victim)) return;
 
         Arena arena = minigame.getArenaManager().getArena(victim);
-        if (arena == null || arena.getState() != GameState.LIVE) return;
+        if (arena == null || (arena.getState() != GameState.LIVE && arena.getState() != GameState.ENDING)) return;
         if (minigame.getArenaManager().getArena(attacker) != arena) return;
 
         Team victimTeam = arena.getTeam(victim.getUniqueId());

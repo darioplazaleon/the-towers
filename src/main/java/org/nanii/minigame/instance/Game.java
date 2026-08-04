@@ -31,6 +31,8 @@ public class Game {
 
     private long startTime;
     private BukkitTask tabListTask;
+    private BukkitTask endTask;
+    private boolean tabActive;
 
     public Game(Arena arena) {
         this.arena = arena;
@@ -125,13 +127,14 @@ public class Game {
     }
 
     public void removeViewer(Player player) {
-        if (tabListTask != null) {
+        if (tabActive) {
             clearTab(player);
         }
     }
 
     public void start() {
         arena.setState(GameState.LIVE);
+        tabActive = true;
 
         for (UUID id : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(id);
@@ -154,22 +157,39 @@ public class Game {
     }
 
     private void end(Team winner) {
+        if (arena.getState() == GameState.ENDING) return;
 
-        arena.sendTitle(winner.getDisplay() + ChatColor.GOLD + " gana la partida!", "");
-        arena.sendMessage(ChatColor.GOLD + "El equipo " + winner.getDisplay() + ChatColor.GOLD + " ha ganado la partida!");
+        arena.setState(GameState.ENDING);
+        arena.stopGenerators();
 
-        arena.reset();
-    }
-
-    public void stop() {
-        boolean wasRunning = tabListTask != null;
-
-        if (wasRunning) {
+        // Congelamos el tab con el marcador final
+        if (tabListTask != null) {
             tabListTask.cancel();
             tabListTask = null;
         }
 
-        if (!wasRunning) return;
+        int seconds = ConfigManager.getEndDelaySeconds();
+
+        arena.sendTitle(winner.getDisplay() + ChatColor.GOLD + " gana la partida!",
+                ChatColor.YELLOW + "Volviendo al lobby en " + seconds + "s...", 10, seconds * 20, 20);
+        arena.sendMessage(ChatColor.GOLD + "El equipo " + winner.getDisplay() + ChatColor.GOLD + " ha ganado la partida!");
+
+        endTask = Bukkit.getScheduler().runTaskLater(arena.getMinigame(), arena::reset, seconds * 20L);
+    }
+
+    public void stop() {
+        if (endTask != null) {
+            endTask.cancel();
+            endTask = null;
+        }
+
+        if (tabListTask != null) {
+            tabListTask.cancel();
+            tabListTask = null;
+        }
+
+        if (!tabActive) return;
+        tabActive = false;
 
         for (UUID id : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(id);
