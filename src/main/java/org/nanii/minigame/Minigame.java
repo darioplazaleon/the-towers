@@ -3,6 +3,7 @@ package org.nanii.minigame;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.nanii.minigame.command.ArenaCommand;
+import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.listener.ConnectListener;
 import org.nanii.minigame.listener.GameListener;
 import org.nanii.minigame.manager.ArenaManager;
@@ -30,6 +31,10 @@ public final class Minigame extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (arenaManager == null) return;
+
+        for (Arena arena : arenaManager.getArenas()) {
+            arena.getGame().stop();
+        }
     }
 }

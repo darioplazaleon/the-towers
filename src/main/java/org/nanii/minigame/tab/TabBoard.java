@@ -21,6 +21,8 @@ public class TabBoard {
     public static final int COLUMNS = 2;
     public static final int SLOTS = ROWS * COLUMNS;
 
+    private final Component[] lastSent = new Component[SLOTS];
+
     private static final EnumSet<Action> CREATE = EnumSet.of(
             Action.ADD_PLAYER,
             Action.UPDATE_LISTED,
@@ -54,7 +56,15 @@ public class TabBoard {
         Arrays.fill(lines, Component.empty());
     }
 
-    // ENVIO
+    public boolean isDirty() {
+        return !Arrays.equals(lines, lastSent);
+    }
+
+    public void markClean() {
+        System.arraycopy(lines, 0, lastSent, 0, SLOTS);
+    }
+
+        // ENVIO
 
     public void show(Player viewer) {
         send(viewer, new ClientboundPlayerInfoUpdatePacket(CREATE, buildEntries()));

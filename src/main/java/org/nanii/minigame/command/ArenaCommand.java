@@ -1,7 +1,5 @@
 package org.nanii.minigame.command;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
-import org.nanii.minigame.tab.TabBoard;
-import org.nanii.minigame.tab.TabDemo;
 
 public class ArenaCommand implements CommandExecutor {
 
@@ -65,14 +61,6 @@ public class ArenaCommand implements CommandExecutor {
                 } else {
                     player.sendMessage("§cID de arena no válido.");
                 }
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("tabtest")) {
-                TabBoard board = new TabBoard();
-                board.set(0,0, Component.text("IZQUIERDA", NamedTextColor.RED));
-                board.set(0,1, Component.text("izq fila 1", NamedTextColor.GRAY));
-                board.set(1,0, Component.text("DERECHA", NamedTextColor.BLUE));
-                board.set(1,1, Component.text("der fila 1", NamedTextColor.GRAY));
-                board.show(player);
-                player.sendMessage("§aTabBoard enviado.");
             } else {
                 player.sendMessage("§cUso: /arena <list|join|leave>");
             }

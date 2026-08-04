@@ -130,6 +130,10 @@ public class Arena {
     }
 
     public void removePlayer(Player player) {
+        if (state == GameState.LIVE) {
+            game.removeViewer(player);
+        }
+
         players.remove(player.getUniqueId());
         player.teleport(ConfigManager.getLobby());
         player.sendTitle("", "");
@@ -197,7 +201,9 @@ public class Arena {
         for (Generator g : generators) g.stop();
     }
 
-    public Minigame getMinigame() {return minigame;}
+    public Minigame getMinigame() {
+        return minigame;
+    }
     //TEAMS
 
     public void setTeam(Player player, Team team) {

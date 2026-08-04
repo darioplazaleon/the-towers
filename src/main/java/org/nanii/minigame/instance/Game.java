@@ -6,14 +6,12 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.tab.TabBoard;
 import org.nanii.minigame.team.Team;
 
-import javax.inject.Named;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +32,7 @@ public class Game {
     private long startTime;
     private BukkitTask tabListTask;
 
-    public Game(Arena arena)
-    {
+    public Game(Arena arena) {
         this.arena = arena;
         for (Team t : Team.values()) {
             teamScores.put(t, 0);
@@ -63,44 +60,13 @@ public class Game {
         deaths.merge(p.getUniqueId(), 1, Integer::sum);
     }
 
-//    public void updateTabList() {
-//        long secs = (System.currentTimeMillis() - startTime) / 1000L;
-//        String time = String.format("%02d:%02d", secs / 60, secs % 60);
-//
-//        String header = ChatColor.GOLD + "" + ChatColor.BOLD + "TOWERS\n"
-//                + ChatColor.GRAY + "Time: " + ChatColor.WHITE + time + "\n"
-//                + Team.RED.getDisplay() + ChatColor.WHITE + " " + teamScores.get(Team.RED)
-//                + ChatColor.GRAY + " - "
-//                + ChatColor.WHITE + teamScores.get(Team.BLUE) + " " + Team.BLUE.getDisplay();
-//
-//        StringBuilder footer = new StringBuilder();
-//        for (Team team : Team.values()) {
-//            footer.append("\n").append(team.getDisplay());
-//            for (UUID id : arena.getPlayers()) {
-//                if (arena.getTeam(id) != team) continue;
-//                Player p = Bukkit.getPlayer(id);
-//                if (p == null) continue;
-//                footer.append("\n").append(ChatColor.WHITE).append("  ").append(p.getName())
-//                        .append(ChatColor.GRAY).append("  ")
-//                        .append(ChatColor.GREEN).append(kills.getOrDefault(id, 0))
-//                        .append(ChatColor.GRAY).append(" / ")
-//                        .append(ChatColor.RED).append(deaths.getOrDefault(id, 0));
-//            }
-//        }
-//
-//        for (UUID id : arena.getPlayers()) {
-//            Player p = Bukkit.getPlayer(id);
-//            if (p != null) {
-//                p.setPlayerListHeaderFooter(header, footer.toString());
-//            }
-//        }
-//    }
-
     public void renderTab() {
         board.clearLines();
 
         renderColumn(0, Team.RED);
         renderColumn(1, Team.BLUE);
+
+        boolean gridChanged = board.isDirty();
 
         long secs = (System.currentTimeMillis() - startTime) / 1000L;
         String time = String.format("%02d:%02d", secs / 60, secs % 60);
@@ -115,9 +81,11 @@ public class Game {
             Player p = Bukkit.getPlayer(id);
             if (p == null) continue;
 
-            board.refresh(p);
+            if (gridChanged) board.refresh(p);
             p.sendPlayerListHeader(header);
         }
+
+        if (gridChanged) board.markClean();
     }
 
     private void renderColumn(int column, Team team) {
@@ -148,6 +116,20 @@ public class Game {
         }
     }
 
+    private void clearTab(Player viewer) {
+        board.hide(viewer);
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            board.showPlayer(viewer, online.getUniqueId());
+        }
+        viewer.sendPlayerListHeaderAndFooter(Component.empty(), Component.empty());
+    }
+
+    public void removeViewer(Player player) {
+        if (tabListTask != null) {
+            clearTab(player);
+        }
+    }
+
     public void start() {
         arena.setState(GameState.LIVE);
 
@@ -157,7 +139,7 @@ public class Game {
             board.show(player);
 
             Team team = arena.getTeam(id);
-            
+
             player.teleport(arena.getTeamSpawn(team));
         }
 
@@ -180,15 +162,19 @@ public class Game {
     }
 
     public void stop() {
-        if (tabListTask != null) {
+        boolean wasRunning = tabListTask != null;
+
+        if (wasRunning) {
             tabListTask.cancel();
             tabListTask = null;
         }
 
+        if (!wasRunning) return;
+
         for (UUID id : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(id);
             if (player != null) {
-                player.setPlayerListHeaderFooter("", "");
+                clearTab(player);
             }
         }
     }
