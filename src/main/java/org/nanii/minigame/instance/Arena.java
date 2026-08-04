@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.manager.ConfigManager;
+import org.nanii.minigame.team.NameTags;
 import org.nanii.minigame.team.Team;
 
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public class Arena {
     private List<UUID> players;
     private Countdown countdown;
     private Game game;
+
     private HashMap<UUID, Team> teams;
+    private final NameTags nameTags = new NameTags();
 
     public Arena(Minigame minigame, int id, String worldName, Location waitRoom, Location blueTeamSpawn,
                  Location redTeamSpawn, PointZone blueScoreZone, PointZone redScoreZone
@@ -76,6 +79,7 @@ public class Arena {
             for (UUID uuid : players) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
+                    nameTags.reset(player);
                     player.teleport(lobby);
                 }
             }
@@ -209,11 +213,13 @@ public class Arena {
     public void setTeam(Player player, Team team) {
         removeTeam(player);
         teams.put(player.getUniqueId(), team);
+        nameTags.apply(player, team);
     }
 
     public void removeTeam(Player player) {
         if (teams.containsKey(player.getUniqueId())) {
             teams.remove(player.getUniqueId());
+            nameTags.reset(player);
         }
     }
 
