@@ -65,6 +65,10 @@ public class ConfigManager {
 
     // Datos Arena
 
+    public static String getArenaWorld(int arenaId) {
+        return config.getString("arenas." + arenaId + ".world");
+    }
+
     public static Set<String> getArenaIds() {
         ConfigurationSection section = config.getConfigurationSection("arenas");
         if (section == null) {

@@ -2,6 +2,8 @@ package org.nanii.minigame.manager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.instance.Arena;
@@ -18,9 +20,14 @@ public class ArenaManager {
         for (String key : ConfigManager.getArenaIds()) {
             int id = Integer.parseInt(key);
 
+            String worldName = ConfigManager.getArenaWorld(id);
+            World world = Bukkit.createWorld(new WorldCreator(worldName));
+            world.setAutoSave(false);
+
             arenas.add(new Arena(
                     minigame,
                     id,
+                    worldName,
                     ConfigManager.getWaitRoom(id),
                     ConfigManager.getTeamSpawn(id, "blue"),
                     ConfigManager.getTeamSpawn(id, "red"),

@@ -1,8 +1,6 @@
 package org.nanii.minigame.instance;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
@@ -19,6 +17,7 @@ public class Arena {
     private Minigame minigame;
 
     private int id;
+    private String worldName;
     private Location waitRoom;
 
     private Location blueTeamSpawn;
@@ -34,11 +33,12 @@ public class Arena {
     private Game game;
     private HashMap<UUID, Team> teams;
 
-    public Arena(Minigame minigame, int id, Location waitRoom, Location blueTeamSpawn,
+    public Arena(Minigame minigame, int id, String worldName, Location waitRoom, Location blueTeamSpawn,
                  Location redTeamSpawn, PointZone blueScoreZone, PointZone redScoreZone
     ) {
         this.minigame = minigame;
         this.id = id;
+        this.worldName = worldName;
 
         this.waitRoom = waitRoom;
         this.countdown = new Countdown(minigame, this);
@@ -63,19 +63,30 @@ public class Arena {
         game.start();
     }
 
-    public void reset(boolean kickPlayers) {
+    public void reset() {
+        GameState previous = state;
+        state = GameState.RESETTING;
         game.stop();
         stopGenerators();
-        if (kickPlayers) {
+
+        sendTitle("", "");
+
+        if (previous == GameState.LIVE) {
+            Location lobby = ConfigManager.getLobby();
             for (UUID uuid : players) {
-                Location loc = ConfigManager.getLobby();
-                Bukkit.getPlayer(uuid).teleport(loc);
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    player.teleport(lobby);
+                }
             }
             players.clear();
             teams.clear();
+
+            Bukkit.unloadWorld(worldName, false);
+            World world = Bukkit.createWorld(new WorldCreator(worldName));
+            world.setAutoSave(false);
         }
 
-        sendTitle("", "");
         state = GameState.RECRUITING;
         countdown.cancel();
         countdown = new Countdown(minigame, this);
@@ -86,13 +97,19 @@ public class Arena {
 
     public void sendMessage(String message) {
         for (UUID uuid : players) {
-            Bukkit.getPlayer(uuid).sendMessage(message);
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendMessage(message);
+            }
         }
     }
 
     public void sendTitle(String title, String subtitle) {
         for (UUID uuid : players) {
-            Bukkit.getPlayer(uuid).sendTitle(title, subtitle);
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendTitle(title, subtitle);
+            }
         }
     }
 
@@ -121,13 +138,13 @@ public class Arena {
 
         if (state == GameState.COUNTDOWN && players.size() < ConfigManager.getRequiredPlayers()) {
             sendMessage(ChatColor.RED + "No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva.");
-            reset(false);
+            reset();
             return;
         }
 
         if (state == GameState.LIVE && players.size() < ConfigManager.getRequiredPlayers()) {
             sendMessage(ChatColor.RED + "No hay suficientes jugadores para continuar el juego. Se reinicia la arena.");
-            reset(false);
+            reset();
         }
     }
 

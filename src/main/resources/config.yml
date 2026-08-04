@@ -12,6 +12,7 @@ lobby:
 # Arenas
 arenas:
   0:
+    world: towers-copy
     # Sala de espera en el mapa
     wait-room:
       world: towers-copy
