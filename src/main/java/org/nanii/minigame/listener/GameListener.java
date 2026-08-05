@@ -64,10 +64,6 @@ public class GameListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player victim)) return;
 
-        Player attacker = resolveAttacker(e.getDamager());
-        if (attacker == null) return;
-
-        if (attacker.equals(victim)) return;
 
         Arena arena = minigame.getArenaManager().getArena(victim);
         if (arena == null) return;
@@ -77,7 +73,9 @@ public class GameListener implements Listener {
             return;
         }
 
-
+        Player attacker = resolveAttacker(e.getDamager());
+        if (attacker == null) return;
+        if (attacker.equals(victim)) return;
         if (minigame.getArenaManager().getArena(attacker) != arena) return;
 
         Team victimTeam = arena.getTeam(victim.getUniqueId());
