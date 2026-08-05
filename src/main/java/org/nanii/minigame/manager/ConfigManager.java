@@ -20,8 +20,8 @@ public class ConfigManager {
     private static FileConfiguration config;
 
     public static void setupConfig(Minigame minigame) {
-        ConfigManager.config = minigame.getConfig();
         minigame.saveDefaultConfig();
+        ConfigManager.config = minigame.getConfig();
     }
 
     public static int getRequiredPoints() {
@@ -38,6 +38,14 @@ public class ConfigManager {
 
     public static int getEndDelaySeconds() {
         return config.getInt("end-delay-seconds", 10);
+    }
+
+    public static int getTeamSize() {
+        return config.getInt("team-size", 5);
+    }
+
+    public static int getMaxTeamDifference() {
+        return config.getInt("max-team-difference", 1);
     }
 
     public static Location getLobby() {

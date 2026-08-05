@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
+import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.tab.TabBoard;
 import org.nanii.minigame.team.Team;
@@ -139,10 +140,14 @@ public class Game {
         for (UUID id : arena.getPlayers()) {
             Player player = Bukkit.getPlayer(id);
             if (player == null) continue;
-            board.show(player);
+
+            player.closeInventory();
+            TeamSelectorItem.remove(player);
 
             Team team = arena.getTeam(id);
+            if (team == null) continue;
 
+            board.show(player);
             player.teleport(arena.getTeamSpawn(team));
         }
 

@@ -4,12 +4,13 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
+import org.nanii.minigame.gui.TeamSelectorItem;
+import org.nanii.minigame.gui.TeamSelectorMenu;
 import org.nanii.minigame.manager.ConfigManager;
-import org.nanii.minigame.team.NameTags;
 import org.nanii.minigame.team.Team;
+import org.nanii.minigame.team.TeamManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +21,8 @@ public class Arena {
     private int id;
     private String worldName;
     private Location waitRoom;
+
+    private final TeamManager teamManager = new TeamManager();
 
     private Location blueTeamSpawn;
     private Location redTeamSpawn;
@@ -33,8 +36,6 @@ public class Arena {
     private Countdown countdown;
     private Game game;
 
-    private HashMap<UUID, Team> teams;
-    private final NameTags nameTags = new NameTags();
 
     public Arena(Minigame minigame, int id, String worldName, Location waitRoom, Location blueTeamSpawn,
                  Location redTeamSpawn, PointZone blueScoreZone, PointZone redScoreZone
@@ -47,7 +48,6 @@ public class Arena {
         this.countdown = new Countdown(minigame, this);
 
         this.players = new ArrayList<>();
-        this.teams = new HashMap<>();
         this.blueTeamSpawn = blueTeamSpawn;
         this.redTeamSpawn = redTeamSpawn;
         this.blueScoreZone = blueScoreZone;
@@ -79,12 +79,12 @@ public class Arena {
             for (UUID uuid : players) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
-                    nameTags.reset(player);
+                    TeamSelectorItem.remove(player);
                     player.teleport(lobby);
                 }
             }
+            teamManager.clear();
             players.clear();
-            teams.clear();
 
             Bukkit.unloadWorld(worldName, false);
             World world = Bukkit.createWorld(new WorldCreator(worldName));
@@ -132,10 +132,8 @@ public class Arena {
         players.add(player.getUniqueId());
         player.teleport(waitRoom);
 
-        Team lowest = getTeamCount(Team.RED) <= getTeamCount(Team.BLUE) ? Team.RED : Team.BLUE;
-        setTeam(player, lowest);
-
-        player.sendMessage(ChatColor.AQUA + "Fuiste agregado al equipo " + lowest.getDisplay() + ".");
+        TeamSelectorItem.give(player);
+        player.sendMessage(ChatColor.AQUA + "Elegi tu equipo con la lana de tu hotbar (click derecho).");
 
         if (state.equals(GameState.RECRUITING) && players.size() >= ConfigManager.getRequiredPlayers()) {
             countdown.start();
@@ -151,7 +149,15 @@ public class Arena {
         player.teleport(ConfigManager.getLobby());
         player.sendTitle("", "");
 
-        removeTeam(player);
+        teamManager.remove(player);
+        TeamSelectorItem.remove(player);
+        player.closeInventory();
+
+        if (state != GameState.LIVE && state != GameState.ENDING) {
+            teamManager.rebalance();
+        }
+
+        TeamSelectorMenu.refresh(this);
 
         if (state == GameState.COUNTDOWN && players.size() < ConfigManager.getRequiredPlayers()) {
             sendMessage(ChatColor.RED + "No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva.");
@@ -183,9 +189,6 @@ public class Arena {
         this.state = state;
     }
 
-    public Team getTeam(UUID id) {
-        return teams.get(id);
-    }
 
     public PointZone getScoringZone(Team team) {
         return team == Team.RED ? blueScoreZone : redScoreZone;
@@ -219,28 +222,30 @@ public class Arena {
     }
 
     //TEAMS
-    public void setTeam(Player player, Team team) {
-        removeTeam(player);
-        teams.put(player.getUniqueId(), team);
-        nameTags.apply(player, team);
+
+    public TeamManager getTeams() {
+        return teamManager;
     }
 
-    public void removeTeam(Player player) {
-        if (teams.containsKey(player.getUniqueId())) {
-            teams.remove(player.getUniqueId());
-            nameTags.reset(player);
-        }
+    public Team getTeam(UUID id) {
+        return teamManager.get(id);
     }
 
     public int getTeamCount(Team team) {
-        int amount = 0;
-        for (Team t : teams.values()) {
-            if (t == team) {
-                amount++;
+        return teamManager.count(team);
+    }
+
+    public void prepareTeams() {
+        for (UUID uuid : players) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+
+            if (teamManager.get(uuid) == null) {
+                Team team = teamManager.assignBalanced(player);
+                player.sendMessage(ChatColor.AQUA + "No elegiste equipo. Fuiste asignado a " + team.getDisplay() + ChatColor.AQUA + ".");
             }
         }
-
-        return amount;
+        teamManager.rebalance();
     }
 
 }

@@ -18,6 +18,10 @@ public enum Team {
         this.color = color;
     }
 
+    public Team opposite() {
+        return this == RED ? BLUE : RED;
+    }
+
     public String getDisplay() {
         return display;
     }

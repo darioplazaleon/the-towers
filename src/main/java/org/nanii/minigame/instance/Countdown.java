@@ -1,49 +1,63 @@
 package org.nanii.minigame.instance;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.manager.ConfigManager;
 
-public class Countdown extends BukkitRunnable {
+public class Countdown {
+
     private Minigame minigame;
     private Arena arena;
-    private int countdownSeconds;
+
+    private int secondsLeft;
+    private BukkitTask task;
 
     public Countdown(Minigame minigame, Arena arena) {
         this.minigame = minigame;
         this.arena = arena;
-        this.countdownSeconds = ConfigManager.getCountdownSeconds();
+        this.secondsLeft = ConfigManager.getCountdownSeconds();
     }
 
     public void start() {
+        if (task != null) return;
         arena.setState(GameState.COUNTDOWN);
-        runTaskTimer(minigame, 0, 20); // Run every 20 ticks (1 second)
+        task = Bukkit.getScheduler().runTaskTimer(minigame, this::tick, 0L, 20L); // Run every 20 ticks (1 second)
     }
 
-    @Override
-    public void run() {
-        if  (arena.getPlayers().size() < ConfigManager.getRequiredPlayers()) {
+    public void cancel() {
+        if (task == null) return;
+        task.cancel();
+        task = null;
+    }
+
+    private void tick() {
+        if (arena.getPlayers().size() < ConfigManager.getRequiredPlayers()) {
             cancel();
-            arena.sendMessage(ChatColor.RED + "Not enough players to start the game. Countdown stopped.");
+            arena.sendMessage(ChatColor.RED + "No hay suficientes jugadores. Cuenta regresiva cancelada.");
             arena.reset();
             return;
         }
 
-        if (countdownSeconds == 0) {
+        if (secondsLeft == 0) {
             cancel();
+            arena.prepareTeams();   // ← autoassign + balance before start
             arena.start();
-            arena.sendTitle("","");
+            arena.sendTitle("", "");
             return;
         }
 
-        if (countdownSeconds <= 10 || countdownSeconds % 15 == 0) {
-            arena.sendMessage(ChatColor.GREEN + "Game will start in " + countdownSeconds + " second" + (countdownSeconds == 1 ? "" : "s") + ".");
+        if (secondsLeft <= 10 || secondsLeft % 15 == 0) {
+            arena.sendMessage(ChatColor.GREEN + "El juego empieza en " + secondsLeft
+                    + " segundo" + (secondsLeft == 1 ? "" : "s") + ".");
         }
 
-        arena.sendTitle(ChatColor.GREEN.toString() + countdownSeconds + " second" + (countdownSeconds == 1 ? "" : "s"), ChatColor.GRAY + "until start");
+        arena.sendTitle(ChatColor.GREEN.toString() + secondsLeft + " segundo" + (secondsLeft == 1 ? "" : "s"),
+                ChatColor.GRAY + "para empezar");
 
-        countdownSeconds--;
+        secondsLeft--;
     }
 }

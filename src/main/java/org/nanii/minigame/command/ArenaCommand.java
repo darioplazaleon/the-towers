@@ -47,25 +47,26 @@ public class ArenaCommand implements CommandExecutor {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     player.sendMessage("§cPor favor, introduce un número válido.");
-                    return false;
+                    return true;
                 }
 
-                if (id >= 0 && id < minigame.getArenaManager().getArenas().size()) {
-                    Arena arena = minigame.getArenaManager().getArena(id);
-                    if (arena.getState() == GameState.RECRUITING || arena.getState() == GameState.COUNTDOWN) {
-                        arena.addPlayer(player);
-                        player.sendMessage("§aTe has unido a la arena " + id + ".");
-                    } else {
-                        player.sendMessage("§cNo puedes unirte a la arena " + id + " porque el juego ya ha comenzado.");
-                    }
+                Arena arena = minigame.getArenaManager().getArena(id);
+                if (arena == null) {
+                    player.sendMessage("§cNo existe la arena " + id + ".");
+                    return true;
+                }
+
+                if (arena.getState() == GameState.RECRUITING || arena.getState() == GameState.COUNTDOWN) {
+                    arena.addPlayer(player);
+                    player.sendMessage("§aTe has unido a la arena " + id + ".");
                 } else {
-                    player.sendMessage("§cID de arena no válido.");
+                    player.sendMessage("§cNo puedes unirte a la arena " + id + " porque el juego ya ha comenzado.");
                 }
             } else {
                 player.sendMessage("§cUso: /arena <list|join|leave>");
             }
         }
 
-        return false;
+        return true;
     }
 }

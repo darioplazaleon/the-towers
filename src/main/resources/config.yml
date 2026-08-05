@@ -3,6 +3,9 @@ required-players: 2
 countdown-seconds: 30
 # Segundos que se muestra el marcador final antes de volver al lobby
 end-delay-seconds: 10
+# Teams
+team-size: 5
+max-team-difference: 1
 # Lobby principal
 lobby:
   world: world
