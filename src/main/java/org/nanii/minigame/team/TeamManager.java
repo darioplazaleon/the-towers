@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TeamManager {
 
-    private final Map<UUID, Team> teams = new LinkedHashMap<>();
+    private final Map<UUID, Team> teams = Collections.synchronizedMap(new LinkedHashMap<>());
     private final NameTags nameTags = new NameTags();
 
     public Team get(UUID id) {
@@ -62,7 +62,7 @@ public class TeamManager {
         Team other = team.opposite();
 
         int target = count(team) + 1;
-        int rival = count(other) - (current == other ? 1 :0);
+        int rival = count(other) - (current == other ? 1 : 0);
 
         if (target > ConfigManager.getTeamSize()) {
             return JoinResult.TEAM_FULL;

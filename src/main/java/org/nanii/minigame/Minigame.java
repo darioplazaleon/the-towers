@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.nanii.minigame.command.ArenaCommand;
 import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.listener.ChatListener;
 import org.nanii.minigame.listener.ConnectListener;
 import org.nanii.minigame.listener.GameListener;
 import org.nanii.minigame.listener.TeamSelectorListener;
@@ -24,6 +25,7 @@ public final class Minigame extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GameListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectListener(this), this);
         Bukkit.getPluginManager().registerEvents(new TeamSelectorListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
 
         getCommand("arena").setExecutor(new ArenaCommand(this));
     }

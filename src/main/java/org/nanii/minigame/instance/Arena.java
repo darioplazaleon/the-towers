@@ -10,9 +10,9 @@ import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.team.Team;
 import org.nanii.minigame.team.TeamManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Arena {
 
@@ -47,7 +47,7 @@ public class Arena {
         this.waitRoom = waitRoom;
         this.countdown = new Countdown(minigame, this);
 
-        this.players = new ArrayList<>();
+        this.players = new CopyOnWriteArrayList<>();
         this.blueTeamSpawn = blueTeamSpawn;
         this.redTeamSpawn = redTeamSpawn;
         this.blueScoreZone = blueScoreZone;
