@@ -1,13 +1,11 @@
 package org.nanii.minigame.manager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.Minigame;
+import org.nanii.minigame.instance.Arena;
 
 import java.util.ArrayList;
 import java.util.List;

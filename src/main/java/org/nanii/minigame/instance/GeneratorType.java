@@ -12,7 +12,7 @@ public enum GeneratorType {
         }
     },
     XP {
-        public void spawn (Location loc, int amount) {
+        public void spawn(Location loc, int amount) {
             for (int i = 0; i < amount; i++) {
                 loc.getWorld().spawn(loc, ThrownExpBottle.class);
             }

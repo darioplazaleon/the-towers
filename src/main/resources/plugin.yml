@@ -4,7 +4,7 @@ version: '${version}'
 main: org.nanii.minigame.Minigame
 api-version: '26.1.2'
 load: POSTWORLD
-depend: [Multiverse-Core]
+depend: [ Multiverse-Core ]
 commands:
   arena:
 

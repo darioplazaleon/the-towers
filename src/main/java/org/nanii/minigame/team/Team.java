@@ -29,5 +29,8 @@ public enum Team {
     public Material getMaterial() {
         return material;
     }
-    public NamedTextColor getColor() {return color;}
+
+    public NamedTextColor getColor() {
+        return color;
+    }
 }

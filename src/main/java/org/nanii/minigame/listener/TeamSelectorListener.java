@@ -28,7 +28,7 @@ public class TeamSelectorListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if  (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (!TeamSelectorItem.is(e.getItem())) return;
 
         e.setCancelled(true);
@@ -43,14 +43,14 @@ public class TeamSelectorListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
-        if  (TeamSelectorItem.is(e.getItemDrop().getItemStack())) {
+        if (TeamSelectorItem.is(e.getItemDrop().getItemStack())) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onDrag(InventoryDragEvent e) {
-        if  (e.getInventory().getHolder() instanceof TeamSelectorMenu) {
+        if (e.getInventory().getHolder() instanceof TeamSelectorMenu) {
             e.setCancelled(true);
         }
     }

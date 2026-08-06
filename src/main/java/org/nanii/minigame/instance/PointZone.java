@@ -12,7 +12,7 @@ public class PointZone {
         this.world = world;
         this.box = new BoundingBox(
                 x - radius, y, z - radius,
-                x + radius, y + height,z + radius
+                x + radius, y + height, z + radius
         );
     }
 

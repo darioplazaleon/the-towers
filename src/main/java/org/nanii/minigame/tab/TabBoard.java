@@ -37,7 +37,7 @@ public class TabBoard {
     private final GameProfile[] profiles = new GameProfile[SLOTS];
     private final Component[] lines = new Component[SLOTS];
 
-    public TabBoard(){
+    public TabBoard() {
         for (int slot = 0; slot < SLOTS; slot++) {
             profiles[slot] = new GameProfile(UUID.randomUUID(), String.format("%02d", slot));
             lines[slot] = Component.empty();
@@ -64,7 +64,7 @@ public class TabBoard {
         System.arraycopy(lines, 0, lastSent, 0, SLOTS);
     }
 
-        // ENVIO
+    // ENVIO
 
     public void show(Player viewer) {
         send(viewer, new ClientboundPlayerInfoUpdatePacket(CREATE, buildEntries()));

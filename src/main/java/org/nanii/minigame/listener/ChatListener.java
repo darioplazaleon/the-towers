@@ -38,7 +38,7 @@ public class ChatListener implements Listener {
         if (arena == null) {
             channel = ChatChannel.LOBBY;
             body = raw;
-        } else if (raw.startsWith(GLOBAL_PREFIX)){
+        } else if (raw.startsWith(GLOBAL_PREFIX)) {
             channel = ChatChannel.ARENA;
             body = raw.substring(GLOBAL_PREFIX.length()).trim();
         } else if (senderTeam == null) {

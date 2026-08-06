@@ -2,7 +2,6 @@ package org.nanii.minigame.instance;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
