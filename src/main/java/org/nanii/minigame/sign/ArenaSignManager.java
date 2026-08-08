@@ -145,7 +145,7 @@ public class ArenaSignManager {
         side.line(0, Component.text("TOWERS", NamedTextColor.GOLD, TextDecoration.BOLD));
         side.line(1, Component.text("Arena " + arena.getId(), NamedTextColor.WHITE));
         side.line(2, statusLine(arena));
-        side.line(3, Component.text(arena.getPlayers().size() + "/" + arena.getMaxPlayers(), NamedTextColor.GRAY));
+        side.line(3, countLine(arena));
 
         sign.setWaxed(true);
         sign.update();
@@ -161,6 +161,19 @@ public class ArenaSignManager {
             case RESETTING -> Component.text("Reiniciando", NamedTextColor.DARK_GRAY);
         };
     }
+
+    private Component countLine(Arena arena) {
+        Component count = Component.text(
+                arena.getPlayers().size() + "/" + arena.getMaxPlayers(), NamedTextColor.GRAY
+        );
+
+        int watching = arena.getSpectators().size();
+        if (watching == 0) return count;
+
+        return count.append(Component.text("  ◉" + watching, NamedTextColor.DARK_GRAY));
+    }
+
+
 
     public void startCountdownTask() {
         if (countdownTask != null) return;

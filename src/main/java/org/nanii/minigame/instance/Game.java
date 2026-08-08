@@ -153,6 +153,11 @@ public class Game {
             player.teleport(arena.getTeamSpawn(team));
         }
 
+        for (UUID id : arena.getSpectators()) {
+            Player spectator = Bukkit.getPlayer(id);
+            if (spectator != null) board.show(spectator);
+        }
+
         arena.startGenerators();
 
         startTime = System.currentTimeMillis();

@@ -73,7 +73,7 @@ public class Arena {
 
     public void reset() {
         GameState previous = state;
-        state = GameState.RESETTING;
+        setState(GameState.RESETTING);
         game.stop();
         stopGenerators();
 
@@ -102,7 +102,7 @@ public class Arena {
             world.setAutoSave(false);
         }
 
-        state = GameState.RECRUITING;
+        setState(GameState.RECRUITING);
         countdown.cancel();
         countdown = new Countdown(minigame, this);
         game = new Game(this);
@@ -252,6 +252,7 @@ public class Arena {
 
     public void setState(GameState state) {
         this.state = state;
+        refreshSigns();
     }
 
 

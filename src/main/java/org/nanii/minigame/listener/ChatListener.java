@@ -38,6 +38,9 @@ public class ChatListener implements Listener {
         if (arena == null) {
             channel = ChatChannel.LOBBY;
             body = raw;
+        } else if (arena.isSpectator(sender.getUniqueId())) {
+            channel = ChatChannel.SPECTATOR;
+            body = raw;
         } else if (raw.startsWith(GLOBAL_PREFIX)) {
             channel = ChatChannel.ARENA;
             body = raw.substring(GLOBAL_PREFIX.length()).trim();
@@ -71,7 +74,10 @@ public class ChatListener implements Listener {
 
         if (viewerArena != arena) return false;
 
-        if (channel == ChatChannel.ARENA) return true;
+        boolean viewersIsSpectator = arena.isSpectator(target.getUniqueId());
+
+        if (channel == ChatChannel.SPECTATOR) return viewersIsSpectator;
+        if (channel == ChatChannel.ARENA) return !viewersIsSpectator;
 
         return arena.getTeam(target.getUniqueId()) == senderTeam;
     }
@@ -96,6 +102,12 @@ public class ChatListener implements Listener {
                     .append(message)
                     .build();
             case LOBBY -> Component.text()
+                    .append(Component.text(name, NamedTextColor.GRAY))
+                    .append(separator)
+                    .append(message)
+                    .build();
+            case SPECTATOR -> Component.text()
+                    .append(Component.text("[ESPECTADOR]", NamedTextColor.GRAY, TextDecoration.BOLD))
                     .append(Component.text(name, NamedTextColor.GRAY))
                     .append(separator)
                     .append(message)
