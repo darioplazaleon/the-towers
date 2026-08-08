@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.instance.ArenaJoinResult;
+import org.nanii.minigame.instance.SpectateResult;
 
 public class ArenaCommand implements CommandExecutor {
 
@@ -53,8 +54,23 @@ public class ArenaCommand implements CommandExecutor {
                 } else {
                     player.sendMessage(ChatColor.RED + result.getMessage());
                 }
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("spectate")) {
+                int id;
+                try {
+                    id = Integer.parseInt(args[1]);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(ChatColor.RED + "Por favor, introduce un numero valido.");
+                    return true;
+                }
+
+                Arena arena = minigame.getArenaManager().getArena(id);
+
+                SpectateResult result = minigame.getArenaManager().spectate(player, arena);
+                if (result != SpectateResult.OK) {
+                    player.sendMessage(ChatColor.RED + result.getMessage());
+                }
             } else {
-                player.sendMessage(ChatColor.RED + "Uso: /arena <list|join|leave>");
+                player.sendMessage(ChatColor.RED + "Uso: /arena <list|join|spectate|leave>");
             }
         }
 

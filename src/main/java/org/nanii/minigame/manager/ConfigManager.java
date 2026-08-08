@@ -48,6 +48,10 @@ public class ConfigManager {
         return config.getInt("max-team-difference", 1);
     }
 
+    public static int getMaxSpectators() {
+        return config.getInt("max-spectators", 2);
+    }
+
     public static Location getLobby() {
         return getLocation("lobby");
     }

@@ -6,6 +6,8 @@ end-delay-seconds: 10
 # Teams
 team-size: 5
 max-team-difference: 1
+# Espectadores
+max-spectators: 2
 # Lobby principal
 lobby:
   world: world

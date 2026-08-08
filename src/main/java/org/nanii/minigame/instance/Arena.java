@@ -11,6 +11,7 @@ import org.nanii.minigame.sign.ArenaSignManager;
 import org.nanii.minigame.team.Team;
 import org.nanii.minigame.team.TeamManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,8 +24,10 @@ public class Arena {
     private String worldName;
     private Location waitRoom;
 
-    private final TeamManager teamManager = new TeamManager();
+    private List<UUID> players;
+    private List<UUID> spectators;
 
+    private final TeamManager teamManager = new TeamManager();
     private Location blueTeamSpawn;
     private Location redTeamSpawn;
     private PointZone blueScoreZone;
@@ -33,7 +36,6 @@ public class Arena {
     private List<Generator> generators;
 
     private GameState state;
-    private List<UUID> players;
     private Countdown countdown;
     private Game game;
 
@@ -49,6 +51,8 @@ public class Arena {
         this.countdown = new Countdown(minigame, this);
 
         this.players = new CopyOnWriteArrayList<>();
+        this.spectators = new CopyOnWriteArrayList<>();
+
         this.blueTeamSpawn = blueTeamSpawn;
         this.redTeamSpawn = redTeamSpawn;
         this.blueScoreZone = blueScoreZone;
@@ -74,6 +78,12 @@ public class Arena {
         stopGenerators();
 
         sendTitle("", "");
+
+        for (UUID uuid : spectators) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) removeSpectator(player);
+        }
+        spectators.clear();
 
         if (previous == GameState.LIVE || previous == GameState.ENDING) {
             Location lobby = ConfigManager.getLobby();
@@ -101,29 +111,20 @@ public class Arena {
     //TOOLS
 
     public void sendMessage(String message) {
-        for (UUID uuid : players) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                player.sendMessage(message);
-            }
+        for (Player player : getOnlineMembers()) {
+            player.sendMessage(message);
         }
     }
 
     public void sendTitle(String title, String subtitle) {
-        for (UUID uuid : players) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                player.sendTitle(title, subtitle);
-            }
+        for (Player player : getOnlineMembers()) {
+            player.sendTitle(title, subtitle);
         }
     }
 
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        for (UUID uuid : players) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
-            }
+        for (Player player : getOnlineMembers()) {
+            player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
         }
     }
 
@@ -172,6 +173,37 @@ public class Arena {
         }
     }
 
+    //SPECTATORS
+
+    public void addSpectator(Player player) {
+        spectators.add(player.getUniqueId());
+
+        player.teleport(waitRoom);
+        player.setGameMode(GameMode.SPECTATOR);
+
+        if (state == GameState.LIVE || state == GameState.ENDING) {
+            game.addViewer(player);
+        }
+
+        player.sendMessage(ChatColor.GRAY + "Estas mirando la arena " + id + " como espectador. Usa /arena leave para volver al lobby.");
+    }
+
+    public void removeSpectator(Player player) {
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            player.setSpectatorTarget(null);
+        }
+
+        spectators.remove(player.getUniqueId());
+
+        if (state == GameState.LIVE || state == GameState.ENDING) {
+            game.removeViewer(player);
+        }
+
+        player.setGameMode(GameMode.SURVIVAL);
+        player.teleport(ConfigManager.getLobby());
+        player.sendTitle("", "");
+    }
+
     //INFO
 
     public int getId() {
@@ -184,6 +216,38 @@ public class Arena {
 
     public List<UUID> getPlayers() {
         return players;
+    }
+
+    public List<UUID> getSpectators() {
+        return spectators;
+    }
+
+    public List<Player> getOnlineMembers() {
+        List<Player> result = new ArrayList<>(players.size() + spectators.size());
+
+        for (UUID uuid : players) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) result.add(player);
+        }
+
+        for (UUID uuid : spectators) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) result.add(player);
+        }
+
+        return result;
+    }
+
+    public boolean isSpectator(UUID id) {
+        return spectators.contains(id);
+    }
+
+    public boolean contains(UUID id) {
+        return players.contains(id) || spectators.contains(id);
+    }
+
+    public int getMaxSpectators() {
+        return ConfigManager.getMaxSpectators();
     }
 
     public void setState(GameState state) {

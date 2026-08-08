@@ -80,10 +80,7 @@ public class Game {
                 .append(Component.text(time, NamedTextColor.WHITE))
                 .build();
 
-        for (UUID id : arena.getPlayers()) {
-            Player p = Bukkit.getPlayer(id);
-            if (p == null) continue;
-
+        for (Player p : arena.getOnlineMembers()) {
             if (gridChanged) board.refresh(p);
             p.sendPlayerListHeader(header);
         }
@@ -125,6 +122,11 @@ public class Game {
             board.showPlayer(viewer, online.getUniqueId());
         }
         viewer.sendPlayerListHeaderAndFooter(Component.empty(), Component.empty());
+    }
+
+    public void addViewer(Player player) {
+        if (!tabActive) return;
+        board.show(player);
     }
 
     public void removeViewer(Player player) {
@@ -196,11 +198,8 @@ public class Game {
         if (!tabActive) return;
         tabActive = false;
 
-        for (UUID id : arena.getPlayers()) {
-            Player player = Bukkit.getPlayer(id);
-            if (player != null) {
-                clearTab(player);
-            }
+        for (Player player : arena.getOnlineMembers()) {
+            clearTab(player);
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.nanii.minigame.listener;
 
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,7 +19,13 @@ public class ConnectListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().teleport(ConfigManager.getLobby());
+        Player player = e.getPlayer();
+
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            player.setGameMode(GameMode.SURVIVAL);
+        }
+
+        player.teleport(ConfigManager.getLobby());
     }
 
     @EventHandler
