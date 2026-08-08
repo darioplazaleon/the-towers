@@ -7,6 +7,7 @@ import org.nanii.minigame.Minigame;
 import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.gui.TeamSelectorMenu;
 import org.nanii.minigame.manager.ConfigManager;
+import org.nanii.minigame.sign.ArenaSignManager;
 import org.nanii.minigame.team.Team;
 import org.nanii.minigame.team.TeamManager;
 
@@ -221,6 +222,10 @@ public class Arena {
         return minigame;
     }
 
+    public int getMaxPlayers() {
+        return ConfigManager.getTeamSize() * 2;
+    }
+
     //TEAMS
 
     public TeamManager getTeams() {
@@ -246,6 +251,13 @@ public class Arena {
             }
         }
         teamManager.rebalance();
+    }
+
+    //SIGNS
+
+    private void refreshSigns() {
+        ArenaSignManager signs = minigame.getSignManager();
+        if (signs != null) signs.refresh(this);
     }
 
 }

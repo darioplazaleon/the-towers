@@ -1,13 +1,14 @@
 package org.nanii.minigame.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.instance.ArenaJoinResult;
 
 public class ArenaCommand implements CommandExecutor {
 
@@ -29,19 +30,14 @@ public class ArenaCommand implements CommandExecutor {
                     player.sendMessage("§e- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")");
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
-                Arena arena = minigame.getArenaManager().getArena(player);
-                if (arena != null) {
-                    arena.removePlayer(player);
-                    player.sendMessage("§aHas salido del juego en la arena " + arena.getId() + ".");
+                boolean result = minigame.getArenaManager().leave(player);
+                if (result) {
+                    player.sendMessage(ChatColor.GREEN + "Has salido de la arena.");
                 } else {
-                    player.sendMessage("§cNo estás en ninguna arena.");
-                }
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
-                if (minigame.getArenaManager().getArena(player) != null) {
-                    player.sendMessage("§cYa estás en una arena. Usa /arena leave para salir primero.");
-                    return true;
+                    player.sendMessage(ChatColor.RED + "No estás en ninguna arena.");
                 }
 
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
                 int id;
                 try {
                     id = Integer.parseInt(args[1]);
@@ -49,18 +45,13 @@ public class ArenaCommand implements CommandExecutor {
                     player.sendMessage("§cPor favor, introduce un número válido.");
                     return true;
                 }
-
                 Arena arena = minigame.getArenaManager().getArena(id);
-                if (arena == null) {
-                    player.sendMessage("§cNo existe la arena " + id + ".");
-                    return true;
-                }
 
-                if (arena.getState() == GameState.RECRUITING || arena.getState() == GameState.COUNTDOWN) {
-                    arena.addPlayer(player);
-                    player.sendMessage("§aTe has unido a la arena " + id + ".");
+                ArenaJoinResult result = minigame.getArenaManager().join(player, arena);
+                if (result == ArenaJoinResult.OK) {
+                    player.sendMessage(ChatColor.GREEN + "Te uniste a la arena " + arena.getId() + ".");
                 } else {
-                    player.sendMessage("§cNo puedes unirte a la arena " + id + " porque el juego ya ha comenzado.");
+                    player.sendMessage(ChatColor.RED + result.getMessage());
                 }
             } else {
                 player.sendMessage("§cUso: /arena <list|join|leave>");

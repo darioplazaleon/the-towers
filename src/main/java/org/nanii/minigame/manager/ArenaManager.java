@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.instance.ArenaJoinResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,4 +60,29 @@ public class ArenaManager {
 
         return null;
     }
+
+    public ArenaJoinResult join(Player player, Arena arena) {
+        if (arena == null) return ArenaJoinResult.ARENA_NOT_FOUND;
+        if (getArena(player) != null) {
+            return ArenaJoinResult.ALREADY_IN_ARENA;
+        }
+        if (arena.getState() != GameState.RECRUITING && arena.getState() != GameState.COUNTDOWN) {
+            return ArenaJoinResult.IN_PROGRESS;
+        }
+        if (arena.getPlayers().size() >= arena.getMaxPlayers()) {
+            return ArenaJoinResult.FULL;
+        }
+
+        arena.addPlayer(player);
+        return ArenaJoinResult.OK;
+    }
+
+
+    public boolean leave(Player player) {
+        Arena arena = getArena(player);
+        if (arena == null) return false;
+        arena.removePlayer(player);
+        return true;
+    }
+
 }

@@ -7,4 +7,7 @@ load: POSTWORLD
 depend: [ Multiverse-Core ]
 commands:
   arena:
-
+permissions:
+  minigame.admin:
+    description: Permite crear y romper carteles de The Towers
+    default: op
