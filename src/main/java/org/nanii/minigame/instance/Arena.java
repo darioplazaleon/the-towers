@@ -226,6 +226,10 @@ public class Arena {
         return ConfigManager.getTeamSize() * 2;
     }
 
+    public int getCountdownSeconds() {
+        return countdown.getSecondsLeft();
+    }
+
     //TEAMS
 
     public TeamManager getTeams() {

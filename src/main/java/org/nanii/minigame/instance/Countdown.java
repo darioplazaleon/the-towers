@@ -59,4 +59,8 @@ public class Countdown {
 
         secondsLeft--;
     }
+
+    public int getSecondsLeft() {
+        return secondsLeft;
+    }
 }

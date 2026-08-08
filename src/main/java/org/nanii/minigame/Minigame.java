@@ -24,6 +24,7 @@ public final class Minigame extends JavaPlugin {
         signManager = new ArenaSignManager(this);
         signManager.load();
         Bukkit.getScheduler().runTask(this, signManager::refreshAll);
+        signManager.startCountdownTask();
 
         Bukkit.getPluginManager().registerEvents(new GameListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectListener(this), this);
@@ -42,7 +43,7 @@ public final class Minigame extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (signManager != null) signManager.save();
+        if (signManager != null) signManager.shutdown();
         if (arenaManager == null) return;
 
         for (Arena arena : arenaManager.getArenas()) {

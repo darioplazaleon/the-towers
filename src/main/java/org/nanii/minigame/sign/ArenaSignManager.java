@@ -11,6 +11,8 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitTask;
+import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
 
@@ -22,10 +24,13 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class ArenaSignManager {
+
     private final Minigame minigame;
     private final Map<SignKey, Integer> signs = new HashMap<>();
     private File file;
     private YamlConfiguration config;
+
+    private BukkitTask countdownTask;
 
     public ArenaSignManager(Minigame minigame) {
         this.minigame = minigame;
@@ -150,12 +155,30 @@ public class ArenaSignManager {
     private Component statusLine(Arena arena) {
         return switch (arena.getState()) {
             case RECRUITING -> Component.text("Esperando", NamedTextColor.GREEN);
-            case COUNTDOWN -> Component.text("Iniciando...", NamedTextColor.YELLOW);
+            case COUNTDOWN -> Component.text("Empieza en " + arena.getCountdownSeconds(), NamedTextColor.YELLOW);
             case LIVE -> Component.text("En partida", NamedTextColor.RED);
             case ENDING -> Component.text("Terminando", NamedTextColor.GOLD);
             case RESETTING -> Component.text("Reiniciando", NamedTextColor.DARK_GRAY);
         };
     }
 
+    public void startCountdownTask() {
+        if  (countdownTask != null) return;
 
+        countdownTask = Bukkit.getScheduler().runTaskTimer(minigame, () -> {
+            for (Arena arena : minigame.getArenaManager().getArenas()) {
+                if (arena.getState() == GameState.COUNTDOWN) {
+                    refresh(arena);
+                }
+            }
+        }, 20L, 20L);
+    }
+
+    public void shutdown() {
+        if (countdownTask != null) {
+            countdownTask.cancel();
+            countdownTask = null;
+        }
+        save();
+    }
 }
