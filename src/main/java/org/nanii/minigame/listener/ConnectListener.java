@@ -5,7 +5,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.nanii.minigame.Minigame;
-import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.manager.ConfigManager;
 
 public class ConnectListener implements Listener {
@@ -23,9 +22,6 @@ public class ConnectListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        Arena arena = minigame.getArenaManager().getArena(e.getPlayer());
-        if (arena != null) {
-            arena.removePlayer(e.getPlayer());
-        }
+        minigame.getArenaManager().leave(e.getPlayer());
     }
 }

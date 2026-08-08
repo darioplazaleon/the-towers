@@ -39,7 +39,9 @@ public final class Minigame extends JavaPlugin {
         return arenaManager;
     }
 
-    public ArenaSignManager getSignManager() {return signManager;}
+    public ArenaSignManager getSignManager() {
+        return signManager;
+    }
 
     @Override
     public void onDisable() {

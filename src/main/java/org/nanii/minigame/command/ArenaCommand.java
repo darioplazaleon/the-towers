@@ -24,10 +24,10 @@ public class ArenaCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-                player.sendMessage("§aLista de arenas disponibles:");
+                player.sendMessage(ChatColor.GREEN + "Lista de arenas disponibles:");
 
                 for (Arena arena : minigame.getArenaManager().getArenas()) {
-                    player.sendMessage("§e- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")");
+                    player.sendMessage(ChatColor.YELLOW + "- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")");
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
                 boolean result = minigame.getArenaManager().leave(player);
@@ -42,7 +42,7 @@ public class ArenaCommand implements CommandExecutor {
                 try {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("§cPor favor, introduce un número válido.");
+                    player.sendMessage(ChatColor.RED + "Por favor, introduce un número válido.");
                     return true;
                 }
                 Arena arena = minigame.getArenaManager().getArena(id);
@@ -54,7 +54,7 @@ public class ArenaCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + result.getMessage());
                 }
             } else {
-                player.sendMessage("§cUso: /arena <list|join|leave>");
+                player.sendMessage(ChatColor.RED + "Uso: /arena <list|join|leave>");
             }
         }
 

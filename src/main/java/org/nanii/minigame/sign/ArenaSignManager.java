@@ -163,7 +163,7 @@ public class ArenaSignManager {
     }
 
     public void startCountdownTask() {
-        if  (countdownTask != null) return;
+        if (countdownTask != null) return;
 
         countdownTask = Bukkit.getScheduler().runTaskTimer(minigame, () -> {
             for (Arena arena : minigame.getArenaManager().getArenas()) {
