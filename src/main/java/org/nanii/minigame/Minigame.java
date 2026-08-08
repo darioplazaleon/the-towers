@@ -32,7 +32,9 @@ public final class Minigame extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SignListener(this), this);
 
-        getCommand("arena").setExecutor(new ArenaCommand(this));
+        ArenaCommand arenaCommand = new ArenaCommand(this);
+        getCommand("arena").setExecutor(arenaCommand);
+        getCommand("arena").setTabCompleter(arenaCommand);
     }
 
     public ArenaManager getArenaManager() {
