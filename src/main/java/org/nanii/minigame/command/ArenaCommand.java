@@ -4,16 +4,23 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.instance.ArenaJoinResult;
 import org.nanii.minigame.instance.SpectateResult;
 
-public class ArenaCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArenaCommand implements CommandExecutor, TabCompleter {
 
     private Minigame minigame;
+    private static final List<String> SUBCOMMANDS = List.of("list", "join", "spectate", "leave");
 
     public ArenaCommand(Minigame minigame) {
         this.minigame = minigame;
@@ -75,5 +82,23 @@ public class ArenaCommand implements CommandExecutor {
         }
 
         return true;
+    }
+
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<>());
+        }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("spectate"))) {
+            List<String> ids = new ArrayList<>();
+            for (Arena arena : minigame.getArenaManager().getArenas()) {
+                ids.add(String.valueOf(arena.getId()));
+            }
+            return StringUtil.copyPartialMatches(args[1], ids, new ArrayList<>());
+        }
+
+        return List.of();
     }
 }
