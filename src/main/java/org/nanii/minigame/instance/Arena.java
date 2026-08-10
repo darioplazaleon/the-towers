@@ -1,5 +1,6 @@
 package org.nanii.minigame.instance;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.GameState;
@@ -11,6 +12,7 @@ import org.nanii.minigame.sign.ArenaSignManager;
 import org.nanii.minigame.team.Team;
 import org.nanii.minigame.team.TeamManager;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -126,6 +128,14 @@ public class Arena {
         for (Player player : getOnlineMembers()) {
             player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
         }
+    }
+
+    public void showTitle(Component title, Component subtitle) {
+
+    }
+
+    public void showTitle(Component title, Component subtitle, Duration in, Duration stay, Duration out) {
+
     }
 
     //PLAYERS
