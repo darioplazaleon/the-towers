@@ -174,7 +174,6 @@ public class ArenaSignManager {
     }
 
 
-
     public void startCountdownTask() {
         if (countdownTask != null) return;
 

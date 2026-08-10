@@ -1,6 +1,7 @@
 package org.nanii.minigame.command;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,17 +33,17 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
 
             if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(ChatColor.GREEN + "Lista de arenas disponibles:");
+                player.sendMessage(Component.text("Lista de arenas disponibles:", NamedTextColor.GREEN));
 
                 for (Arena arena : minigame.getArenaManager().getArenas()) {
-                    player.sendMessage(ChatColor.YELLOW + "- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")");
+                    player.sendMessage(Component.text("- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")", NamedTextColor.YELLOW));
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
                 boolean result = minigame.getArenaManager().leave(player);
                 if (result) {
-                    player.sendMessage(ChatColor.GREEN + "Has salido de la arena.");
+                    player.sendMessage(Component.text("Has salido de la arena.", NamedTextColor.GREEN));
                 } else {
-                    player.sendMessage(ChatColor.RED + "No estás en ninguna arena.");
+                    player.sendMessage(Component.text("No estás en ninguna arena.", NamedTextColor.RED));
                 }
 
             } else if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
@@ -50,23 +51,23 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
                 try {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Por favor, introduce un número válido.");
+                    player.sendMessage(Component.text("Por favor, introduce un número válido.", NamedTextColor.RED));
                     return true;
                 }
                 Arena arena = minigame.getArenaManager().getArena(id);
 
                 ArenaJoinResult result = minigame.getArenaManager().join(player, arena);
                 if (result == ArenaJoinResult.OK) {
-                    player.sendMessage(ChatColor.GREEN + "Te uniste a la arena " + arena.getId() + ".");
+                    player.sendMessage(Component.text("Te uniste a la arena " + arena.getId() + ".", NamedTextColor.GREEN));
                 } else {
-                    player.sendMessage(ChatColor.RED + result.getMessage());
+                    player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
                 }
             } else if (args.length == 2 && args[0].equalsIgnoreCase("spectate")) {
                 int id;
                 try {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "Por favor, introduce un numero valido.");
+                    player.sendMessage(Component.text("Por favor, introduce un numero valido.", NamedTextColor.RED));
                     return true;
                 }
 
@@ -74,10 +75,10 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
 
                 SpectateResult result = minigame.getArenaManager().spectate(player, arena);
                 if (result != SpectateResult.OK) {
-                    player.sendMessage(ChatColor.RED + result.getMessage());
+                    player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
                 }
             } else {
-                player.sendMessage(ChatColor.RED + "Uso: /arena <list|join|spectate|leave>");
+                player.sendMessage(Component.text("Uso: /arena <list|join|spectate|leave>", NamedTextColor.RED));
             }
         }
 

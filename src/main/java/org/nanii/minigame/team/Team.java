@@ -1,15 +1,15 @@
 package org.nanii.minigame.team;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 public enum Team {
-    RED(ChatColor.RED + "Red", Material.RED_WOOL, NamedTextColor.RED),
-    BLUE(ChatColor.BLUE + "Blue", Material.BLUE_WOOL, NamedTextColor.BLUE);
+    RED("Red", Material.RED_WOOL, NamedTextColor.RED),
+    BLUE("Blue", Material.BLUE_WOOL, NamedTextColor.BLUE);
 
-    private String display;
-    private Material material;
+    private final String display;
+    private final Material material;
     private final NamedTextColor color;
 
     Team(String display, Material material, NamedTextColor color) {
@@ -22,8 +22,8 @@ public enum Team {
         return this == RED ? BLUE : RED;
     }
 
-    public String getDisplay() {
-        return display;
+    public Component displayName() {
+        return Component.text(display, color);
     }
 
     public Material getMaterial() {

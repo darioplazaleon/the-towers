@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
@@ -13,6 +12,7 @@ import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.tab.TabBoard;
 import org.nanii.minigame.team.Team;
 
+import java.time.Duration;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class Game {
 
         player.teleport(arena.getTeamSpawn(team));
 
-        arena.sendMessage(ChatColor.GREEN + player.getName() + " scored a point for " + team.name() + "! Total points: " + teamScores.get(team));
+        arena.sendMessage(Component.text(player.getName() + " scored a point for " + team.name() + "!", NamedTextColor.GREEN));
 
         if (teamScores.get(team) >= ConfigManager.getRequiredPoints()) {
             end(team);
@@ -165,7 +165,7 @@ public class Game {
                 arena.getMinigame(), this::renderTab, 0L, 20L
         );
 
-        arena.sendMessage(ChatColor.GREEN + "The game has started!");
+        arena.sendMessage(Component.text("The game has started!", NamedTextColor.GREEN));
     }
 
     private void end(Team winner) {
@@ -182,9 +182,16 @@ public class Game {
 
         int seconds = ConfigManager.getEndDelaySeconds();
 
-        arena.sendTitle(winner.getDisplay() + ChatColor.GOLD + " gana la partida!",
-                ChatColor.YELLOW + "Volviendo al lobby en " + seconds + "s...", 10, seconds * 20, 20);
-        arena.sendMessage(ChatColor.GOLD + "El equipo " + winner.getDisplay() + ChatColor.GOLD + " ha ganado la partida!");
+        arena.showTitle(
+                winner.displayName().append(Component.text(" gana la partida!", NamedTextColor.GOLD)),
+                Component.text("Volviendo al lobby en " + seconds + "s...", NamedTextColor.YELLOW),
+                Duration.ofMillis(500),
+                Duration.ofSeconds(seconds),
+                Duration.ofSeconds(1)
+        );
+        arena.sendMessage(Component.text("El equipo ", NamedTextColor.GOLD)
+                .append(winner.displayName())
+                .append(Component.text(" ha ganado la partida!")));
 
         endTask = Bukkit.getScheduler().runTaskLater(arena.getMinigame(), arena::reset, seconds * 20L);
     }

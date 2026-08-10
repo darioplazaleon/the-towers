@@ -1,6 +1,8 @@
 package org.nanii.minigame.instance;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.GameState;
@@ -79,7 +81,7 @@ public class Arena {
         game.stop();
         stopGenerators();
 
-        sendTitle("", "");
+        clearTitles();
 
         for (UUID uuid : spectators) {
             Player player = Bukkit.getPlayer(uuid);
@@ -112,30 +114,30 @@ public class Arena {
 
     //TOOLS
 
-    public void sendMessage(String message) {
+    public void sendMessage(Component message) {
         for (Player player : getOnlineMembers()) {
             player.sendMessage(message);
         }
     }
 
-    public void sendTitle(String title, String subtitle) {
-        for (Player player : getOnlineMembers()) {
-            player.sendTitle(title, subtitle);
-        }
-    }
-
-    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        for (Player player : getOnlineMembers()) {
-            player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
-        }
-    }
-
     public void showTitle(Component title, Component subtitle) {
-
+        Title t = Title.title(title, subtitle, Title.DEFAULT_TIMES);
+        for (Player player : getOnlineMembers()) {
+            player.showTitle(t);
+        }
     }
 
-    public void showTitle(Component title, Component subtitle, Duration in, Duration stay, Duration out) {
+    public void showTitle(Component title, Component subtitle, Duration in, Duration stay, Duration fadeOut) {
+        Title t = Title.title(title, subtitle, Title.Times.times(in, stay, fadeOut));
+        for (Player player : getOnlineMembers()) {
+            player.showTitle(t);
+        }
+    }
 
+    public void clearTitles() {
+        for (Player player : getOnlineMembers()) {
+            player.clearTitle();
+        }
     }
 
     //PLAYERS
@@ -145,7 +147,7 @@ public class Arena {
         player.teleport(waitRoom);
 
         TeamSelectorItem.give(player);
-        player.sendMessage(ChatColor.AQUA + "Elegi tu equipo con la lana de tu hotbar (click derecho).");
+        player.sendMessage(Component.text("Elegi tu equipo con la lana de tu hotbar (click derecho).", NamedTextColor.AQUA));
 
         if (state.equals(GameState.RECRUITING) && players.size() >= ConfigManager.getRequiredPlayers()) {
             countdown.start();
@@ -159,7 +161,7 @@ public class Arena {
 
         players.remove(player.getUniqueId());
         player.teleport(ConfigManager.getLobby());
-        player.sendTitle("", "");
+        player.clearTitle();
 
         teamManager.remove(player);
         TeamSelectorItem.remove(player);
@@ -172,13 +174,13 @@ public class Arena {
         TeamSelectorMenu.refresh(this);
 
         if (state == GameState.COUNTDOWN && players.size() < ConfigManager.getRequiredPlayers()) {
-            sendMessage(ChatColor.RED + "No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva.");
+            sendMessage(Component.text("No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva.", NamedTextColor.RED));
             reset();
             return;
         }
 
         if (state == GameState.LIVE && players.size() < ConfigManager.getRequiredPlayers()) {
-            sendMessage(ChatColor.RED + "No hay suficientes jugadores para continuar el juego. Se reinicia la arena.");
+            sendMessage(Component.text("No hay suficientes jugadores para continuar el juego. Se reinicia la arena.", NamedTextColor.RED));
             reset();
         }
     }
@@ -195,7 +197,7 @@ public class Arena {
             game.addViewer(player);
         }
 
-        player.sendMessage(ChatColor.GRAY + "Estas mirando la arena " + id + " como espectador. Usa /arena leave para volver al lobby.");
+        player.sendMessage(Component.text("Estas mirando la arena " + id + " como espectador. Usa /arena leave para volver al lobby.", NamedTextColor.GRAY));
     }
 
     public void removeSpectator(Player player) {
@@ -211,7 +213,7 @@ public class Arena {
 
         player.setGameMode(GameMode.SURVIVAL);
         player.teleport(ConfigManager.getLobby());
-        player.sendTitle("", "");
+        player.clearTitle();
     }
 
     //INFO
@@ -326,7 +328,9 @@ public class Arena {
 
             if (teamManager.get(uuid) == null) {
                 Team team = teamManager.assignBalanced(player);
-                player.sendMessage(ChatColor.AQUA + "No elegiste equipo. Fuiste asignado a " + team.getDisplay() + ChatColor.AQUA + ".");
+                player.sendMessage(Component.text("No elegiste equipo. Fuiste asignado a ", NamedTextColor.AQUA)
+                        .append(team.displayName())
+                        .append(Component.text(".")));
             }
         }
         teamManager.rebalance();

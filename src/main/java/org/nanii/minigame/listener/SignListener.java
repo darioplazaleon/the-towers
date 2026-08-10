@@ -2,8 +2,8 @@ package org.nanii.minigame.listener;
 
 import io.papermc.paper.event.player.PlayerOpenSignEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class SignListener implements Listener {
 
         Player player = e.getPlayer();
         if (!player.hasPermission(PERMISSION)) {
-            player.sendMessage(ChatColor.RED + "No tenes permiso para crear carteles de arena.");
+            player.sendMessage(Component.text("No tenes permiso para crear carteles de arena.", NamedTextColor.RED));
             return;
         }
 
@@ -43,18 +43,18 @@ public class SignListener implements Listener {
         try {
             id = Integer.parseInt(plain(e.line(1)));
         } catch (NumberFormatException ex) {
-            player.sendMessage(ChatColor.RED + "La segunda linea tiene que ser el id de la arena.");
+            player.sendMessage(Component.text("La segunda linea tiene que ser el id de la arena.", NamedTextColor.RED));
             return;
         }
 
         Arena arena = minigame.getArenaManager().getArena(id);
         if (arena == null) {
-            player.sendMessage(ChatColor.RED + "No existe la arena " + id + ".");
+            player.sendMessage(Component.text("No existe la arena " + id + ".", NamedTextColor.RED));
             return;
         }
 
         minigame.getSignManager().register(e.getBlock(), id);
-        player.sendMessage(ChatColor.GREEN + "Cartel vinculado a la arena " + id + ".");
+        player.sendMessage(Component.text("Cartel vinculado a la arena " + id + ".", NamedTextColor.GREEN));
     }
 
     @EventHandler
@@ -75,10 +75,10 @@ public class SignListener implements Listener {
         ArenaJoinResult result = minigame.getArenaManager().join(player, arena);
 
         if (result == ArenaJoinResult.OK) {
-            player.sendMessage(ChatColor.GREEN + "Te uniste a la arena " + arenaId + ".");
+            player.sendMessage(Component.text("Te uniste a la arena " + arenaId + ".", NamedTextColor.GREEN));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.4f);
         } else {
-            player.sendMessage(ChatColor.RED + result.getMessage());
+            player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
         }
     }
@@ -97,12 +97,12 @@ public class SignListener implements Listener {
         Player player = e.getPlayer();
         if (!player.hasPermission(PERMISSION)) {
             e.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "No podes romper un cartel de arena.");
+            player.sendMessage(Component.text("No podes romper un cartel de arena.", NamedTextColor.RED));
             return;
         }
 
         minigame.getSignManager().unregister(block);
-        player.sendMessage(ChatColor.YELLOW + "Cartel de arena eliminado.");
+        player.sendMessage(Component.text("Cartel de arena eliminado.", NamedTextColor.YELLOW));
     }
 
     private String plain(Component component) {

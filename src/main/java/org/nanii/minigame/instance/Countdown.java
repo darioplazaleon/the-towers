@@ -1,11 +1,14 @@
 package org.nanii.minigame.instance;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.manager.ConfigManager;
+
+import java.time.Duration;
 
 public class Countdown {
 
@@ -36,7 +39,7 @@ public class Countdown {
     private void tick() {
         if (arena.getPlayers().size() < ConfigManager.getRequiredPlayers()) {
             cancel();
-            arena.sendMessage(ChatColor.RED + "No hay suficientes jugadores. Cuenta regresiva cancelada.");
+            arena.sendMessage(Component.text("No hay suficientes jugadores. Cuenta regresiva cancelada.", NamedTextColor.RED));
             arena.reset();
             return;
         }
@@ -45,18 +48,17 @@ public class Countdown {
             cancel();
             arena.prepareTeams();   // ← autoassign + balance before start
             arena.start();
-            arena.sendTitle("", "");
+            arena.clearTitles();
             return;
         }
 
-        if (secondsLeft <= 10 || secondsLeft % 15 == 0) {
-            arena.sendMessage(ChatColor.GREEN + "El juego empieza en " + secondsLeft
-                    + " segundo" + (secondsLeft == 1 ? "" : "s") + ".");
-        }
-
-        arena.sendTitle(ChatColor.GREEN.toString() + secondsLeft + " segundo" + (secondsLeft == 1 ? "" : "s"),
-                ChatColor.GRAY + "para empezar");
-
+        arena.showTitle(
+                Component.text(secondsLeft + " segundo" + (secondsLeft == 1 ? "" : "s"), NamedTextColor.GREEN),
+                Component.text("para empezar.", NamedTextColor.GRAY),
+                Duration.ZERO,
+                Duration.ofMillis(1500),
+                Duration.ZERO
+        );
         secondsLeft--;
     }
 
