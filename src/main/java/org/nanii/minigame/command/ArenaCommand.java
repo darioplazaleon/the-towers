@@ -78,7 +78,7 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
                 }
             } else {
-                player.sendMessage(Component.text("Uso: /arena <list|join|spectate|leave>", NamedTextColor.RED));
+                player.sendMessage(Component.translatable("command.arena.usage"));
             }
         }
 

@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.nanii.minigame.command.ArenaCommand;
 import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.lang.LangManager;
 import org.nanii.minigame.listener.*;
 import org.nanii.minigame.manager.ArenaManager;
 import org.nanii.minigame.manager.ConfigManager;
@@ -17,7 +18,9 @@ public final class Minigame extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        LangManager.load(this);
         ConfigManager.setupConfig(this);
+
         TeamSelectorItem.setup(this);
         arenaManager = new ArenaManager(this);
 
@@ -47,6 +50,8 @@ public final class Minigame extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        LangManager.unload();
+
         if (signManager != null) signManager.shutdown();
         if (arenaManager == null) return;
 
