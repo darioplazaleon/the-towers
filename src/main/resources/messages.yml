@@ -1,0 +1,42 @@
+# Messages from The Towers.
+# Format: MiniMessage - https://docs.advntr.dev/minimessage/format.html
+# DONT TOUCH <placeholders>
+
+command:
+  arena:
+    usage: '<red>Uso: /arena \<list|join|spectate|leave>'
+    invalid-number: "<red>Por favor, introduce un numero valido."
+    list:
+      header: "<green>Lista de arenas disponibles:"
+      entry: "<yellow>- Arena <arena> (Estado: <state>)"
+    join:
+      success: "<green>Te uniste a la arena <arena>"
+    leave:
+      success: "<green>Has salido de la arena."
+      not-in-arena: "<red>No estas en ninguna arena."
+
+game:
+  state:
+    recruiting: "Esperando jugadores"
+    countdown: "Por comenzar"
+    live: "En curso"
+    ending: "Terminando"
+    resetting: "Reiniciando"
+
+arena:
+  join:
+    already-in-arena: "<red>Ya estas en una arena. Usa /arena leave para salir primero."
+    arena-not-found: "<red>Esa arena no existe."
+    in-progress: '<red>La partida ya empezo. Usa /arena spectate \<id> para mirarla.'
+    full: "<red>La arena esta llena."
+  spectate:
+    already-in-arena: "<red>Ya estas en una arena. Usa /arena leave para salir primero."
+    arena-not-found: "<red>Esa arena no existe."
+    not-available: "<red>Esa arena se esta reiniciando. Proba en unos segundos."
+    full: "<red>No hay lugares de espectador libres en esa arena."
+
+team:
+  join:
+    already-in-team: "<red>Ya estas en ese equipo."
+    team-full: "<red>Ese equipo esta lleno."
+    would-unbalance: "<red>No podes unirte: dejarias los equipos desbalanceados."

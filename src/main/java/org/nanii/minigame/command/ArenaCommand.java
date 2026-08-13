@@ -2,6 +2,7 @@ package org.nanii.minigame.command;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,17 +34,19 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
 
             if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(Component.text("Lista de arenas disponibles:", NamedTextColor.GREEN));
+                player.sendMessage(Component.translatable("command.arena.list.header"));
 
                 for (Arena arena : minigame.getArenaManager().getArenas()) {
-                    player.sendMessage(Component.text("- Arena " + arena.getId() + " (Estado: " + arena.getState() + ")", NamedTextColor.YELLOW));
+                    player.sendMessage(Component.translatable("command.arena.list.entry",
+                            Argument.numeric("arena", arena.getId()),
+                            Argument.component("state", Component.translatable(arena.getState()))));
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
                 boolean result = minigame.getArenaManager().leave(player);
                 if (result) {
-                    player.sendMessage(Component.text("Has salido de la arena.", NamedTextColor.GREEN));
+                    player.sendMessage(Component.translatable("command.arena.leave.success"));
                 } else {
-                    player.sendMessage(Component.text("No estás en ninguna arena.", NamedTextColor.RED));
+                    player.sendMessage(Component.translatable("command.arena.leave.not-in-arena"));
                 }
 
             } else if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
@@ -51,23 +54,24 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
                 try {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Por favor, introduce un número válido.", NamedTextColor.RED));
+                    player.sendMessage(Component.translatable("command.arena.invalid-number"));
                     return true;
                 }
                 Arena arena = minigame.getArenaManager().getArena(id);
 
                 ArenaJoinResult result = minigame.getArenaManager().join(player, arena);
                 if (result == ArenaJoinResult.OK) {
-                    player.sendMessage(Component.text("Te uniste a la arena " + arena.getId() + ".", NamedTextColor.GREEN));
+                    player.sendMessage(Component.translatable("command.arena.join.success",
+                            Argument.numeric("arena", arena.getId())));
                 } else {
-                    player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
+                    player.sendMessage(Component.translatable(result));
                 }
             } else if (args.length == 2 && args[0].equalsIgnoreCase("spectate")) {
                 int id;
                 try {
                     id = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Por favor, introduce un numero valido.", NamedTextColor.RED));
+                    player.sendMessage(Component.translatable("command.arena.invalid-number"));
                     return true;
                 }
 
@@ -75,7 +79,7 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
 
                 SpectateResult result = minigame.getArenaManager().spectate(player, arena);
                 if (result != SpectateResult.OK) {
-                    player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
+                    player.sendMessage(Component.translatable(result));
                 }
             } else {
                 player.sendMessage(Component.translatable("command.arena.usage"));

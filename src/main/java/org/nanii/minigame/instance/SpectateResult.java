@@ -1,19 +1,21 @@
 package org.nanii.minigame.instance;
 
-public enum SpectateResult {
-    OK(null),
-    ARENA_NOT_FOUND("Esa arena no existe."),
-    ALREADY_IN_ARENA("Ya estas en una arena. Usa /arena leave para salir primero."),
-    NOT_AVAILABLE("Esa arena se esta reiniciando. Proba en unos segundos."),
-    FULL("No hay lugares de espectador libres en esa arena.");
+import net.kyori.adventure.translation.Translatable;
+import org.jetbrains.annotations.NotNull;
 
-    private final String message;
+import java.util.Locale;
 
-    SpectateResult(String message) {
-        this.message = message;
-    }
+public enum SpectateResult implements Translatable {
+    OK,
+    ARENA_NOT_FOUND,
+    ALREADY_IN_ARENA,
+    NOT_AVAILABLE,
+    FULL;
 
-    public String getMessage() {
-        return message;
+    private final String translationKey = "arena.spectate." + name().toLowerCase(Locale.ROOT).replace('_', '-');
+
+    @Override
+    public @NotNull String translationKey() {
+        return translationKey;
     }
 }

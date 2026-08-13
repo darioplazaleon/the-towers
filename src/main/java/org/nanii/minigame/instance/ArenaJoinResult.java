@@ -1,19 +1,21 @@
 package org.nanii.minigame.instance;
 
-public enum ArenaJoinResult {
-    OK(null),
-    ALREADY_IN_ARENA("Ya estas en una arena. Usa /arena leave para salir primero."),
-    ARENA_NOT_FOUND("Esa arena no existe."),
-    IN_PROGRESS("La partida ya empezo. Usa /arena spectate <id> para mirarla."),
-    FULL("La arena esta llena.");
+import net.kyori.adventure.translation.Translatable;
+import org.jetbrains.annotations.NotNull;
 
-    private final String message;
+import java.util.Locale;
 
-    ArenaJoinResult(String message) {
-        this.message = message;
-    }
+public enum ArenaJoinResult implements Translatable {
+    OK,
+    ALREADY_IN_ARENA,
+    ARENA_NOT_FOUND,
+    IN_PROGRESS,
+    FULL;
 
-    public String getMessage() {
-        return message;
+    private final String translationKey = "arena.join." + name().toLowerCase(Locale.ROOT).replace('_', '-');
+
+    @Override
+    public @NotNull String translationKey() {
+        return translationKey;
     }
 }

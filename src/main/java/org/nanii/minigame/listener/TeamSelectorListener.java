@@ -81,7 +81,7 @@ public class TeamSelectorListener implements Listener {
             player.closeInventory();
             TeamSelectorMenu.refresh(menu.getArena());
         } else {
-            player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
+            player.sendMessage(Component.translatable(result));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
             menu.render();
         }

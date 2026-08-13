@@ -1,19 +1,21 @@
 package org.nanii.minigame.team;
 
-public enum JoinResult {
+import net.kyori.adventure.translation.Translatable;
+import org.jetbrains.annotations.NotNull;
 
-    OK(null),
-    ALREADY_IN_TEAM("Ya estas en ese equipo."),
-    TEAM_FULL("Ese equipo esta lleno."),
-    WOULD_UNBALANCE("No podes unirte: dejarias los equipos desbalanceados.");
+import java.util.Locale;
 
-    private final String message;
+public enum JoinResult implements Translatable {
 
-    JoinResult(String message) {
-        this.message = message;
-    }
+    OK,
+    ALREADY_IN_TEAM,
+    TEAM_FULL,
+    WOULD_UNBALANCE;
 
-    public String getMessage() {
-        return message;
+    private final String translationKey = "team.join." + name().toLowerCase(Locale.ROOT).replace('_', '-');
+
+    @Override
+    public @NotNull String translationKey() {
+        return translationKey;
     }
 }

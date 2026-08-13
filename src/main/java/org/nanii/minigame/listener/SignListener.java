@@ -3,6 +3,7 @@ package org.nanii.minigame.listener;
 import io.papermc.paper.event.player.PlayerOpenSignEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -75,10 +76,10 @@ public class SignListener implements Listener {
         ArenaJoinResult result = minigame.getArenaManager().join(player, arena);
 
         if (result == ArenaJoinResult.OK) {
-            player.sendMessage(Component.text("Te uniste a la arena " + arenaId + ".", NamedTextColor.GREEN));
+            player.sendMessage(Component.translatable("command.arena.join.success", Argument.numeric("arena", arenaId)));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.4f);
         } else {
-            player.sendMessage(Component.text(result.getMessage(), NamedTextColor.RED));
+            player.sendMessage(Component.translatable(result));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
         }
     }
