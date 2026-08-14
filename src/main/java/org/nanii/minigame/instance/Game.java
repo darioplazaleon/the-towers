@@ -12,7 +12,6 @@ import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.tab.TabBoard;
 import org.nanii.minigame.team.Team;
-import org.w3c.dom.Text;
 
 import java.time.Duration;
 import java.util.EnumMap;

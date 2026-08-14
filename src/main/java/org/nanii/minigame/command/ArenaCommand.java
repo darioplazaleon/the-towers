@@ -1,7 +1,6 @@
 package org.nanii.minigame.command;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -84,7 +83,7 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(Component.translatable(result));
                 }
             } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-                if  (!player.hasPermission("minigame.admin")) {
+                if (!player.hasPermission("minigame.admin")) {
                     player.sendMessage(Component.translatable("command.arena.no-permission"));
                     return true;
                 }

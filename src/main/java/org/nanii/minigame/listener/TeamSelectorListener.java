@@ -1,7 +1,6 @@
 package org.nanii.minigame.listener;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
