@@ -1,8 +1,7 @@
 package org.nanii.minigame.sign;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,6 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
 import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.lang.LangManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -142,10 +142,10 @@ public class ArenaSignManager {
         if (!(block.getState(false) instanceof Sign sign)) return false;
 
         SignSide side = sign.getSide(Side.FRONT);
-        side.line(0, Component.text("TOWERS", NamedTextColor.GOLD, TextDecoration.BOLD));
-        side.line(1, Component.text("Arena " + arena.getId(), NamedTextColor.WHITE));
-        side.line(2, statusLine(arena));
-        side.line(3, countLine(arena));
+        line(side, 0, Component.translatable("sign.title"));
+        line(side, 1, Component.translatable("sign.arena", Argument.numeric("arena", arena.getId())));
+        line(side, 2, statusLine(arena));
+        line(side, 3, countLine(arena));
 
         sign.setWaxed(true);
         sign.update();
@@ -154,23 +154,25 @@ public class ArenaSignManager {
 
     private Component statusLine(Arena arena) {
         return switch (arena.getState()) {
-            case RECRUITING -> Component.text("Esperando", NamedTextColor.GREEN);
-            case COUNTDOWN -> Component.text("Empieza en " + arena.getCountdownSeconds(), NamedTextColor.YELLOW);
-            case LIVE -> Component.text("En partida", NamedTextColor.RED);
-            case ENDING -> Component.text("Terminando", NamedTextColor.GOLD);
-            case RESETTING -> Component.text("Reiniciando", NamedTextColor.DARK_GRAY);
+            case RECRUITING -> Component.translatable("sign.status.recruiting");
+            case COUNTDOWN -> Component.translatable("sign.status.countdown",
+                    Argument.numeric("seconds", arena.getCountdownSeconds()));
+            case LIVE -> Component.translatable("sign.status.live");
+            case ENDING -> Component.translatable("sign.status.ending");
+            case RESETTING -> Component.translatable("sign.status.resetting");
         };
     }
 
     private Component countLine(Arena arena) {
-        Component count = Component.text(
-                arena.getPlayers().size() + "/" + arena.getMaxPlayers(), NamedTextColor.GRAY
-        );
+        Component count = Component.translatable("sign.count",
+                Argument.numeric("players", arena.getPlayers().size()),
+                Argument.numeric("max", arena.getMaxPlayers()));
 
         int watching = arena.getSpectators().size();
         if (watching == 0) return count;
 
-        return count.append(Component.text("  ◉" + watching, NamedTextColor.DARK_GRAY));
+        return count.append(Component.translatable("sign.spectators",
+                Argument.numeric("count", watching)));
     }
 
 
@@ -192,5 +194,9 @@ public class ArenaSignManager {
             countdownTask = null;
         }
         save();
+    }
+
+    private void line(SignSide side, int index, Component component) {
+        side.line(index, LangManager.render(component));
     }
 }

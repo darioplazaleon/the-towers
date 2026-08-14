@@ -2,6 +2,7 @@ package org.nanii.minigame.team;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.nanii.minigame.manager.ConfigManager;
@@ -126,10 +127,8 @@ public class TeamManager {
 
             Team destination = bigger.opposite();
             set(player, destination);
-            player.sendMessage(Component.text("Fuiste movido al equipo ", NamedTextColor.YELLOW)
-                    .append(destination.displayName())
-                    .append(Component.text(" para equilibrar los equipos.", NamedTextColor.YELLOW))
-            );
+            player.sendMessage(Component.translatable("team.moved",
+                    Argument.component("team", destination.displayName())));
             moved = true;
         }
 

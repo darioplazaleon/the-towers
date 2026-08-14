@@ -24,6 +24,10 @@ public class ConfigManager {
         ConfigManager.config = minigame.getConfig();
     }
 
+    public static String getLanguage() {
+        return config.getString("language", "es");
+    }
+
     public static int getRequiredPoints() {
         return config.getInt("required-points");
     }

@@ -1,0 +1,101 @@
+# Messages from The Towers.
+# Format: MiniMessage - https://docs.advntr.dev/minimessage/format.html
+# DONT TOUCH <placeholders>
+command:
+  arena:
+    usage: '<red>Uso: /arena \<list|join|spectate|leave>'
+    invalid-number: "<red>Por favor, introduce un numero valido."
+    list:
+      header: "<green>Lista de arenas disponibles:"
+      entry: "<yellow>- Arena <arena> (Estado: <state>)"
+    join:
+      success: "<green>Te uniste a la arena <arena>"
+    leave:
+      success: "<green>Has salido de la arena."
+      not-in-arena: "<red>No estas en ninguna arena."
+    no-permission: "<red>No tenes permiso para usar ese comando."
+    reload: "<green>Mensajes recargados (<count> claves)."
+game:
+  started: "<green>La partida ha comenzado!"
+  score: "<green><player> anoto un punto para <team>!"
+  end:
+    title: "<team> <gold>gana la partida!"
+    subtitle: "<yellow>Volviendo al lobby en <seconds>s..."
+    broadcast: "<gold>El equipo <team> ha ganado la partida!"
+  tab:
+    header: "<gold><bold>TOWERS</bold> <dark_gray>· <white><time>"
+  state:
+    recruiting: "Esperando jugadores"
+    countdown: "Por comenzar"
+    live: "En curso"
+    ending: "Terminando"
+    resetting: "Reiniciando"
+arena:
+  join:
+    already-in-arena: "<red>Ya estas en una arena. Usa /arena leave para salir primero."
+    arena-not-found: "<red>Esa arena no existe."
+    in-progress: '<red>La partida ya empezo. Usa /arena spectate \<id> para mirarla.'
+    full: "<red>La arena esta llena."
+  spectate:
+    already-in-arena: "<red>Ya estas en una arena. Usa /arena leave para salir primero."
+    arena-not-found: "<red>Esa arena no existe."
+    not-available: "<red>Esa arena se esta reiniciando. Proba en unos segundos."
+    full: "<red>No hay lugares de espectador libres en esa arena."
+  choose-team: "<aqua>Elegi tu equipo con la lana de tu hotbar (click derecho)."
+  team-assigned: "<aqua>No elegiste equipo. Fuiste asignado a <team>."
+  spectating: "<gray>Estas mirando la arena <arena> como espectador. Usa /arena leave para volver al lobby."
+  not-enough-players:
+    countdown: "<red>No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva."
+    live: "<red>No hay suficientes jugadores para continuar el juego. Se reinicia la arena."
+team:
+  moved: "<yellow>Fuiste movido al equipo <team> para equilibrar los equipos."
+  name:
+    red: "Red"
+    blue: "Blue"
+  join:
+    success: "<green>Te uniste al equipo <team>"
+    already-in-team: "<red>Ya estas en ese equipo."
+    team-full: "<red>Ese equipo esta lleno."
+    would-unbalance: "<red>No podes unirte: dejarias los equipos desbalanceados."
+countdown:
+  cancelled: "<red>No hay suficientes jugadores. Cuenta regresiva cancelada."
+  subtitle: "<gray>para empezar."
+  title:
+    one: "<green><seconds> segundo"
+    other: "<green><seconds> segundos"
+sign:
+  title: "<gold><bold>TOWERS"
+  arena: "<white>Arena <arena>"
+  count: "<gray><players>/<max>"
+  spectators: "<dark_gray>  ◉<count>"
+  status:
+    recruiting: "<green>Esperando"
+    countdown: "<yellow>Empieza en <seconds>"
+    live: "<red>En partida"
+    ending: "<gold>Terminando"
+    resetting: "<dark_gray>Reiniciando"
+  admin:
+    no-permission: "<red>No tenes permiso para crear carteles de arena."
+    invalid-id: "<red>La segunda linea tiene que ser el id de la arena."
+    arena-not-found: "<red>No existe la arena <arena>."
+    linked: "<green>Cartel vinculado a la arena <arena>."
+    cannot-break: "<red>No podes romper un cartel de arena."
+    removed: "<yellow>Cartel de arena eliminado."
+gui:
+  selector:
+    title: "<dark_gray>Elegi tu equipo"
+    team-name: "<team> <white><count>/<max>"
+    empty: "<dark_gray> (vacio)"
+    item:
+      name: "<green><bold>Elegir equipo"
+      lore: "<gray>Click derecho para abrir el menu"
+    status:
+      ok: "<green>▸ Click para unirte"
+      already-in-team: "<aqua>✔ Tu equipo actual"
+      team-full: "<red>✖ Equipo lleno"
+      would-unbalance: "<red>✖ Desbalanceria los equipos"
+chat:
+  team: "<team_color><bold>[EQUIPO]</bold> <player></team_color><dark_gray>: <white><message>"
+  arena: "<bullet><white><player><dark_gray>: <white><message>"
+  lobby: "<gray><player><dark_gray>: <white><message>"
+  spectator: "<gray><bold>[ESPECTADOR]</bold> <player><dark_gray>: <white><message>"

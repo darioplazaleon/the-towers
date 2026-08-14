@@ -3,6 +3,7 @@ package org.nanii.minigame.gui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.nanii.minigame.instance.Arena;
+import org.nanii.minigame.lang.LangManager;
 import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.team.JoinResult;
 import org.nanii.minigame.team.Team;
@@ -36,7 +38,7 @@ public class TeamSelectorMenu implements InventoryHolder {
         this.arena = arena;
         this.viewer = viewer;
         this.inventory = Bukkit.createInventory(this, SIZE,
-                Component.text("Elegi tu equipo", NamedTextColor.DARK_GRAY)
+                Component.translatable("gui.selector.title")
         );
         render();
     }
@@ -86,19 +88,17 @@ public class TeamSelectorMenu implements InventoryHolder {
         ItemStack item = new ItemStack(team.getMaterial());
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(Component.text()
-                .append(Component.text(team.name(), team.getColor(), TextDecoration.BOLD))
-                .append(Component.text(" " + teams.count(team) + "/" + ConfigManager.getTeamSize(), NamedTextColor.WHITE))
-                .decoration(TextDecoration.ITALIC, false)
-
-                .build());
+        meta.displayName(line(Component.translatable("gui.selector.team-name",
+                Argument.component("team", team.displayName().decorate(TextDecoration.BOLD)),
+                Argument.numeric("count", teams.count(team)),
+                Argument.numeric("max", ConfigManager.getTeamSize()))));
 
         List<Component> lore = new ArrayList<>();
         lore.add(line("─────────────", NamedTextColor.DARK_GRAY));
 
         List<UUID> members = teams.members(team);
         if (members.isEmpty()) {
-            lore.add(line(" (vacio)", NamedTextColor.DARK_GRAY));
+            lore.add(line(Component.translatable("gui.selector.empty")));
         } else {
             for (UUID id : members) {
                 Player member = Bukkit.getPlayer(id);
@@ -121,15 +121,19 @@ public class TeamSelectorMenu implements InventoryHolder {
 
     private Component statusLine(JoinResult result) {
         return switch (result) {
-            case OK -> line("▸ Click para unirte", NamedTextColor.GREEN);
-            case ALREADY_IN_TEAM -> line("✔ Tu equipo actual", NamedTextColor.AQUA);
-            case TEAM_FULL -> line("✖ Equipo lleno", NamedTextColor.RED);
-            case WOULD_UNBALANCE -> line("✖ Desbalancearía los equipos", NamedTextColor.RED);
+            case OK -> line(Component.translatable("gui.selector.status.ok"));
+            case ALREADY_IN_TEAM -> line(Component.translatable("gui.selector.status.already-in-team"));
+            case TEAM_FULL -> line(Component.translatable("gui.selector.status.team-full"));
+            case WOULD_UNBALANCE -> line(Component.translatable("gui.selector.status.would-unbalance"));
         };
     }
 
     private Component line(String text, NamedTextColor color) {
         return Component.text(text, color).decoration(TextDecoration.ITALIC, false);
+    }
+
+    private Component line(Component text) {
+        return LangManager.render(text, viewer.locale()).decoration(TextDecoration.ITALIC, false);
     }
 
     private ItemStack buildFiller() {

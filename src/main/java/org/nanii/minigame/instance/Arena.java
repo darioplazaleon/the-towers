@@ -2,6 +2,7 @@ package org.nanii.minigame.instance;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -147,7 +148,7 @@ public class Arena {
         player.teleport(waitRoom);
 
         TeamSelectorItem.give(player);
-        player.sendMessage(Component.text("Elegi tu equipo con la lana de tu hotbar (click derecho).", NamedTextColor.AQUA));
+        player.sendMessage(Component.translatable("arena.choose-team"));
 
         if (state.equals(GameState.RECRUITING) && players.size() >= ConfigManager.getRequiredPlayers()) {
             countdown.start();
@@ -174,13 +175,13 @@ public class Arena {
         TeamSelectorMenu.refresh(this);
 
         if (state == GameState.COUNTDOWN && players.size() < ConfigManager.getRequiredPlayers()) {
-            sendMessage(Component.text("No hay suficientes jugadores para iniciar el juego. Se cancela la cuenta regresiva.", NamedTextColor.RED));
+            sendMessage(Component.translatable("arena.not-enough-players.countdown"));
             reset();
             return;
         }
 
         if (state == GameState.LIVE && players.size() < ConfigManager.getRequiredPlayers()) {
-            sendMessage(Component.text("No hay suficientes jugadores para continuar el juego. Se reinicia la arena.", NamedTextColor.RED));
+            sendMessage(Component.translatable("arena.not-enough-players.live"));
             reset();
         }
     }
@@ -197,7 +198,7 @@ public class Arena {
             game.addViewer(player);
         }
 
-        player.sendMessage(Component.text("Estas mirando la arena " + id + " como espectador. Usa /arena leave para volver al lobby.", NamedTextColor.GRAY));
+        player.sendMessage(Component.translatable("arena.spectating", Argument.numeric("arena", id)));
     }
 
     public void removeSpectator(Player player) {
@@ -328,9 +329,7 @@ public class Arena {
 
             if (teamManager.get(uuid) == null) {
                 Team team = teamManager.assignBalanced(player);
-                player.sendMessage(Component.text("No elegiste equipo. Fuiste asignado a ", NamedTextColor.AQUA)
-                        .append(team.displayName())
-                        .append(Component.text(".")));
+                player.sendMessage(Component.translatable("arena.team-assigned", Argument.component("team", team.displayName())));
             }
         }
         teamManager.rebalance();

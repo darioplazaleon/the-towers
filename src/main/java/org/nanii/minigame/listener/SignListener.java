@@ -36,7 +36,7 @@ public class SignListener implements Listener {
 
         Player player = e.getPlayer();
         if (!player.hasPermission(PERMISSION)) {
-            player.sendMessage(Component.text("No tenes permiso para crear carteles de arena.", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("sign.admin.no-permission"));
             return;
         }
 
@@ -44,18 +44,20 @@ public class SignListener implements Listener {
         try {
             id = Integer.parseInt(plain(e.line(1)));
         } catch (NumberFormatException ex) {
-            player.sendMessage(Component.text("La segunda linea tiene que ser el id de la arena.", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("sign.admin.invalid-id"));
             return;
         }
 
         Arena arena = minigame.getArenaManager().getArena(id);
         if (arena == null) {
-            player.sendMessage(Component.text("No existe la arena " + id + ".", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("sign.admin.arena-not-found",
+                    Argument.numeric("arena", id)));
             return;
         }
 
         minigame.getSignManager().register(e.getBlock(), id);
-        player.sendMessage(Component.text("Cartel vinculado a la arena " + id + ".", NamedTextColor.GREEN));
+        player.sendMessage(Component.translatable("sign.admin.linked",
+                Argument.numeric("arena", id)));
     }
 
     @EventHandler
@@ -98,12 +100,12 @@ public class SignListener implements Listener {
         Player player = e.getPlayer();
         if (!player.hasPermission(PERMISSION)) {
             e.setCancelled(true);
-            player.sendMessage(Component.text("No podes romper un cartel de arena.", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("sign.admin.cannot-break"));
             return;
         }
 
         minigame.getSignManager().unregister(block);
-        player.sendMessage(Component.text("Cartel de arena eliminado.", NamedTextColor.YELLOW));
+        player.sendMessage(Component.translatable("sign.admin.removed"));
     }
 
     private String plain(Component component) {

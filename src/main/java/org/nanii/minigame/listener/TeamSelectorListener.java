@@ -2,6 +2,7 @@ package org.nanii.minigame.listener;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -74,9 +75,7 @@ public class TeamSelectorListener implements Listener {
         JoinResult result = menu.getArena().getTeams().tryJoin(player, team);
 
         if (result == JoinResult.OK) {
-            player.sendMessage(Component.text("Te uniste al equipo ", NamedTextColor.GREEN)
-                    .append(team.displayName())
-                    .append(Component.text(".")));
+            player.sendMessage(Component.translatable("team.join.success", Argument.component("team", team.displayName())));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.4f);
             player.closeInventory();
             TeamSelectorMenu.refresh(menu.getArena());

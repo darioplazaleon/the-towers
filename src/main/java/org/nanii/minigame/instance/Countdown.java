@@ -2,6 +2,7 @@ package org.nanii.minigame.instance;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.minigame.GameState;
@@ -39,7 +40,7 @@ public class Countdown {
     private void tick() {
         if (arena.getPlayers().size() < ConfigManager.getRequiredPlayers()) {
             cancel();
-            arena.sendMessage(Component.text("No hay suficientes jugadores. Cuenta regresiva cancelada.", NamedTextColor.RED));
+            arena.sendMessage(Component.translatable("countdown.cancelled"));
             arena.reset();
             return;
         }
@@ -52,9 +53,11 @@ public class Countdown {
             return;
         }
 
+        String key = secondsLeft == 1 ? "coundown.title.one" : "countdown.title.other";
+
         arena.showTitle(
-                Component.text(secondsLeft + " segundo" + (secondsLeft == 1 ? "" : "s"), NamedTextColor.GREEN),
-                Component.text("para empezar.", NamedTextColor.GRAY),
+                Component.translatable(key, Argument.numeric("seconds", secondsLeft)),
+                Component.translatable("countdown.subtitle"),
                 Duration.ZERO,
                 Duration.ofMillis(1500),
                 Duration.ZERO

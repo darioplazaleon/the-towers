@@ -4,7 +4,8 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,35 +84,23 @@ public class ChatListener implements Listener {
     }
 
     private Component format(ChatChannel channel, Team team, String name, String body) {
-        Component separator = Component.text(": ", NamedTextColor.DARK_GRAY);
-        Component message = Component.text(body, NamedTextColor.WHITE);
-
         return switch (channel) {
-            case TEAM -> Component.text()
-                    .append(Component.text("[EQUIPO] ", team.getColor(), TextDecoration.BOLD))
-                    .append(Component.text(name, team.getColor()))
-                    .append(separator)
-                    .append(message)
-                    .build();
-            case ARENA -> Component.text()
-                    .append(team == null
+            case TEAM -> Component.translatable("chat.team",
+                    Argument.tag("team_color", Tag.styling(team.getColor())),
+                    Argument.string("player", name),
+                    Argument.string("message", body));
+            case ARENA -> Component.translatable("chat.arena",
+                    Argument.component("bullet", team == null
                             ? Component.text("○ ", NamedTextColor.GRAY)
-                            : Component.text("● ", team.getColor()))
-                    .append(Component.text(name, NamedTextColor.WHITE))
-                    .append(separator)
-                    .append(message)
-                    .build();
-            case LOBBY -> Component.text()
-                    .append(Component.text(name, NamedTextColor.GRAY))
-                    .append(separator)
-                    .append(message)
-                    .build();
-            case SPECTATOR -> Component.text()
-                    .append(Component.text("[ESPECTADOR]", NamedTextColor.GRAY, TextDecoration.BOLD))
-                    .append(Component.text(name, NamedTextColor.GRAY))
-                    .append(separator)
-                    .append(message)
-                    .build();
+                            : Component.text("● ", team.getColor())),
+                    Argument.string("player", name),
+                    Argument.string("message", body));
+            case LOBBY -> Component.translatable("chat.lobby",
+                    Argument.string("player", name),
+                    Argument.string("message", body));
+            case SPECTATOR -> Component.translatable("chat.spectator",
+                    Argument.string("player", name),
+                    Argument.string("message", body));
         };
     }
 }

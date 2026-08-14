@@ -2,18 +2,21 @@ package org.nanii.minigame.team;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.translation.Translatable;
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
-public enum Team {
-    RED("Red", Material.RED_WOOL, NamedTextColor.RED),
-    BLUE("Blue", Material.BLUE_WOOL, NamedTextColor.BLUE);
+import java.util.Locale;
 
-    private final String display;
+public enum Team implements Translatable {
+    RED(Material.RED_WOOL, NamedTextColor.RED),
+    BLUE(Material.BLUE_WOOL, NamedTextColor.BLUE);
+
     private final Material material;
     private final NamedTextColor color;
+    private final String translationKey = "team.name." + name().toLowerCase(Locale.ROOT);
 
-    Team(String display, Material material, NamedTextColor color) {
-        this.display = display;
+    Team(Material material, NamedTextColor color) {
         this.material = material;
         this.color = color;
     }
@@ -23,7 +26,7 @@ public enum Team {
     }
 
     public Component displayName() {
-        return Component.text(display, color);
+        return Component.translatable(this).color(color);
     }
 
     public Material getMaterial() {
@@ -32,5 +35,10 @@ public enum Team {
 
     public NamedTextColor getColor() {
         return color;
+    }
+
+    @Override
+    public @NotNull String translationKey() {
+        return translationKey;
     }
 }

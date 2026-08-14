@@ -18,8 +18,8 @@ public final class Minigame extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        LangManager.load(this);
         ConfigManager.setupConfig(this);
+        LangManager.load(this);
 
         TeamSelectorItem.setup(this);
         arenaManager = new ArenaManager(this);

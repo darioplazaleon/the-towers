@@ -11,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.nanii.minigame.Minigame;
+import org.nanii.minigame.lang.LangManager;
 
 import java.util.List;
 
@@ -30,10 +31,10 @@ public class TeamSelectorItem {
         ItemStack item = new ItemStack(Material.WHITE_WOOL);
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(Component.text("Elegir equipo", NamedTextColor.GREEN, TextDecoration.BOLD)
+        meta.displayName(LangManager.render(Component.translatable("gui.selector.item.name"))
                 .decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(
-                Component.text("Click derecho para abrir el menu", NamedTextColor.GRAY)
+                LangManager.render(Component.translatable("gui.selector.item.lore"))
                         .decoration(TextDecoration.ITALIC, false)
         ));
         meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);

@@ -3,6 +3,7 @@ package org.nanii.minigame.instance;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -11,6 +12,7 @@ import org.nanii.minigame.gui.TeamSelectorItem;
 import org.nanii.minigame.manager.ConfigManager;
 import org.nanii.minigame.tab.TabBoard;
 import org.nanii.minigame.team.Team;
+import org.w3c.dom.Text;
 
 import java.time.Duration;
 import java.util.EnumMap;
@@ -19,7 +21,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Game {
-    //GAME LOGIC
 
     private Arena arena;
     private final Map<Team, Integer> teamScores = new EnumMap<>(Team.class);
@@ -48,7 +49,9 @@ public class Game {
 
         player.teleport(arena.getTeamSpawn(team));
 
-        arena.sendMessage(Component.text(player.getName() + " scored a point for " + team.name() + "!", NamedTextColor.GREEN));
+        arena.sendMessage(Component.translatable("game.score",
+                Argument.component("player", player.name()),
+                Argument.component("team", team.displayName())));
 
         if (teamScores.get(team) >= ConfigManager.getRequiredPoints()) {
             end(team);
@@ -74,11 +77,7 @@ public class Game {
         long secs = (System.currentTimeMillis() - startTime) / 1000L;
         String time = String.format("%02d:%02d", secs / 60, secs % 60);
 
-        Component header = Component.text()
-                .append(Component.text("TOWERS", NamedTextColor.GOLD, TextDecoration.BOLD))
-                .append(Component.text(" · ", NamedTextColor.DARK_GRAY))
-                .append(Component.text(time, NamedTextColor.WHITE))
-                .build();
+        Component header = Component.translatable("game.tab.header", Argument.string("time", time));
 
         for (Player p : arena.getOnlineMembers()) {
             if (gridChanged) board.refresh(p);
@@ -91,7 +90,7 @@ public class Game {
     private void renderColumn(int column, Team team) {
         board.set(column, 0, Component.text()
                 .append(Component.text("● ", team.getColor()))
-                .append(Component.text(team.name(), team.getColor(), TextDecoration.BOLD))
+                .append(team.displayName().decorate(TextDecoration.BOLD))
                 .append(Component.text("  " + teamScores.get(team), NamedTextColor.WHITE))
                 .build()
         );
@@ -165,7 +164,7 @@ public class Game {
                 arena.getMinigame(), this::renderTab, 0L, 20L
         );
 
-        arena.sendMessage(Component.text("The game has started!", NamedTextColor.GREEN));
+        arena.sendMessage(Component.translatable("game.started"));
     }
 
     private void end(Team winner) {
@@ -183,15 +182,13 @@ public class Game {
         int seconds = ConfigManager.getEndDelaySeconds();
 
         arena.showTitle(
-                winner.displayName().append(Component.text(" gana la partida!", NamedTextColor.GOLD)),
-                Component.text("Volviendo al lobby en " + seconds + "s...", NamedTextColor.YELLOW),
+                Component.translatable("game.end.title", Argument.component("team", winner.displayName())),
+                Component.translatable("game.end.subtitle", Argument.numeric("seconds", seconds)),
                 Duration.ofMillis(500),
                 Duration.ofSeconds(seconds),
                 Duration.ofSeconds(1)
         );
-        arena.sendMessage(Component.text("El equipo ", NamedTextColor.GOLD)
-                .append(winner.displayName())
-                .append(Component.text(" ha ganado la partida!")));
+        arena.sendMessage(Component.translatable("game.end.broadcast", Argument.component("team", winner.displayName())));
 
         endTask = Bukkit.getScheduler().runTaskLater(arena.getMinigame(), arena::reset, seconds * 20L);
     }

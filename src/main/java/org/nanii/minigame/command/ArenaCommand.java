@@ -15,6 +15,7 @@ import org.nanii.minigame.Minigame;
 import org.nanii.minigame.instance.Arena;
 import org.nanii.minigame.instance.ArenaJoinResult;
 import org.nanii.minigame.instance.SpectateResult;
+import org.nanii.minigame.lang.LangManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
 
     private Minigame minigame;
     private static final List<String> SUBCOMMANDS = List.of("list", "join", "spectate", "leave");
+    private static final List<String> ADMIN_SUBCOMMANDS = List.of("reload");
 
     public ArenaCommand(Minigame minigame) {
         this.minigame = minigame;
@@ -81,6 +83,17 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
                 if (result != SpectateResult.OK) {
                     player.sendMessage(Component.translatable(result));
                 }
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+                if  (!player.hasPermission("minigame.admin")) {
+                    player.sendMessage(Component.translatable("command.arena.no-permission"));
+                    return true;
+                }
+
+                int count = LangManager.load(minigame);
+                minigame.getSignManager().refreshAll();
+
+                player.sendMessage(Component.translatable("command.arena.reload",
+                        Argument.numeric("count", count)));
             } else {
                 player.sendMessage(Component.translatable("command.arena.usage"));
             }
@@ -93,7 +106,9 @@ public class ArenaCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<>());
+            List<String> options = new ArrayList<>(SUBCOMMANDS);
+            if (sender.hasPermission("minigame.admin")) options.addAll(ADMIN_SUBCOMMANDS);
+            return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>());
         }
 
         if (args.length == 2 && (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("spectate"))) {
