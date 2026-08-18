@@ -1,7 +1,7 @@
-name: minigame
+name: TheTowers
 version: '${version}'
 
-main: org.nanii.minigame.Minigame
+main: org.nanii.thetowers.TheTowers
 api-version: '26.1.2'
 load: POSTWORLD
 depend: [ Multiverse-Core ]
@@ -10,6 +10,6 @@ commands:
     description: Comando de arena de TheTowers
     usage: /arena <list|join|spectate|leave>
 permissions:
-  minigame.admin:
+  thetowers.admin:
     description: Permite crear y romper carteles de The Towers
     default: op
