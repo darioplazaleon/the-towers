@@ -15,6 +15,19 @@ command:
       not-in-arena: "<red>You are not in an arena."
     no-permission: "<red>You don't have permission to use that command."
     reload: "<green>Messages reloaded (<count> keys)."
+  stats:
+    disabled: "<red>Stats are disabled on this server."
+    not-found: "<red>No stats found for <player>."
+    header: "<gold><bold><player>'s stats"
+    games: "<gray>Games: <white><games> <dark_gray>| <green><wins>W <dark_gray>/ <red><losses>L <dark_gray>| <yellow><winrate>"
+    combat: "<gray>Kills: <green><kills> <dark_gray>| <gray>Deaths: <red><deaths> <dark_gray>| <gray>K/D: <white><kd>"
+    points: "<gray>Points scored: <aqua><points>"
+    entry: "<yellow><position>. <white><player> <dark_gray>- <aqua><value>"
+    top:
+      usage: '<red>Usage: /top \<kills|points|wins|winrate>'
+      header: "<gold><bold>Top <type>"
+      empty: "<gray>Not enough data yet."
+      entry: "<yellow><position>. <white><player> <dark_gray>- <aqua><value>"
 game:
   started: "<green>The game has started!"
   score: "<green><player> scored a point for <team>!"

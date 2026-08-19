@@ -83,6 +83,10 @@ public class Arena {
 
         clearTitles();
 
+        if (previous == GameState.LIVE || previous == GameState.ENDING) {
+            game.flushAborted();
+        }
+
         for (UUID uuid : spectators) {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) removeSpectator(player);
@@ -157,6 +161,7 @@ public class Arena {
     public void removePlayer(Player player) {
         if (state == GameState.LIVE || state == GameState.ENDING) {
             game.removeViewer(player);
+            game.onPlayerLeft(player);
         }
 
         players.remove(player.getUniqueId());

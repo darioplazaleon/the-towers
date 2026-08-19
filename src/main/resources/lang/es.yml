@@ -15,6 +15,19 @@ command:
       not-in-arena: "<red>No estas en ninguna arena."
     no-permission: "<red>No tenes permiso para usar ese comando."
     reload: "<green>Mensajes recargados (<count> claves)."
+  stats:
+    disabled: "<red>Las estadisticas estan desactivadas en este servidor."
+    not-found: "<red>No hay estadisticas de <player>."
+    header: "<gold><bold>Estadisticas de <player>"
+    games: "<gray>Partidas: <white><games> <dark_gray>| <green><wins>W <dark_gray>/ <red><losses>L <dark_gray>| <yellow><winrate>"
+    combat: "<gray>Kills: <green><kills> <dark_gray>| <gray>Muertes: <red><deaths> <dark_gray>| <gray>K/D: <white><kd>"
+    points: "<gray>Puntos anotados: <aqua><points>"
+    extra: "<dark_gray>Abandonos: <abandons> · <minutes> min jugados"
+    top:
+      usage: '<red>Uso: /top \<kills|points|wins|winrate>'
+      header: "<gold><bold>Top <type>"
+      empty: "<gray>Todavia no hay datos suficientes."
+      entry: "<yellow><position>. <white><player> <dark_gray>- <aqua><value>"
 game:
   started: "<green>La partida ha comenzado!"
   score: "<green><player> anoto un punto para <team>!"

@@ -11,6 +11,12 @@ commands:
   arena:
     description: Comando de arena de TheTowers
     usage: /arena <list|join|spectate|leave>
+  stats:
+    description: Muesta las estadisticas de un jugador
+    usage: /stats [jugador]
+  top:
+    description: Ranking de jugadores
+    usage: /top <kills|point|wins|winrate>
 permissions:
   thetowers.admin:
     description: Permite crear y romper carteles de The Towers

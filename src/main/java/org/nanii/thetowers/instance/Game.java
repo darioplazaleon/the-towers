@@ -10,14 +10,15 @@ import org.bukkit.scheduler.BukkitTask;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.stats.MatchRecord;
+import org.nanii.thetowers.stats.MatchResult;
+import org.nanii.thetowers.stats.MatchStatus;
+import org.nanii.thetowers.stats.PlayerMatchRecord;
 import org.nanii.thetowers.tab.TabBoard;
 import org.nanii.thetowers.team.Team;
 
 import java.time.Duration;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Game {
 
@@ -34,6 +35,9 @@ public class Game {
     private BukkitTask tabListTask;
     private BukkitTask endTask;
     private boolean tabActive;
+
+    private final List<PlayerMatchRecord> abandoned = new ArrayList<>();
+    private boolean persisted;
 
     public Game(Arena arena) {
         this.arena = arena;
@@ -133,6 +137,73 @@ public class Game {
         }
     }
 
+    public void onPlayerLeft(Player player) {
+        if (persisted) return;
+
+        UUID id = player.getUniqueId();
+        Team team = arena.getTeam(id);
+        if (team == null) return;
+
+        long playtime = (System.currentTimeMillis() - startTime) / 1000L;
+        abandoned.add(snapshot(id, player.getName(), team, MatchResult.ABANDON, playtime));
+    }
+
+    public void flushAborted() {
+        flush(MatchStatus.ABORTED, null);
+    }
+
+    private void flush(MatchStatus status, Team winner) {
+        if (startTime == 0L) return;
+        if (persisted) return;
+        persisted = true;
+
+        long now = System.currentTimeMillis();
+        long duration = (now - startTime) / 1000L;
+
+        List<PlayerMatchRecord> records = new ArrayList<>(abandoned);
+
+        for (UUID id : arena.getPlayers()) {
+            Player player = Bukkit.getPlayer(id);
+            if (player == null) continue;
+
+            Team team = arena.getTeam(id);
+            if (team == null) continue;
+
+            MatchResult result = status == MatchStatus.FINISHED
+                    ? (team == winner ? MatchResult.WIN : MatchResult.LOSS)
+                    : MatchResult.NONE;
+
+            records.add(snapshot(id, player.getName(), team, result, duration));
+        }
+
+        if (records.isEmpty()) return;
+
+        arena.getPlugin().getStatsService().recordMatch(new MatchRecord(
+                arena.getId(),
+                startTime,
+                now,
+                duration,
+                status,
+                winner,
+                teamScores.getOrDefault(Team.RED, 0),
+                teamScores.getOrDefault(Team.BLUE, 0),
+                records
+        ));
+    }
+
+    private PlayerMatchRecord snapshot(UUID id, String name, Team team, MatchResult result, long playtime) {
+        return new PlayerMatchRecord(
+                id,
+                name,
+                team,
+                result,
+                kills.getOrDefault(id, 0),
+                deaths.getOrDefault(id, 0),
+                playerScores.getOrDefault(id, 0),
+                playtime
+        );
+    }
+
     public void start() {
         arena.setState(GameState.LIVE);
         tabActive = true;
@@ -171,6 +242,8 @@ public class Game {
 
         arena.setState(GameState.ENDING);
         arena.stopGenerators();
+
+        flush(MatchStatus.FINISHED, winner);
 
         // Congelamos el tab con el marcador final
         if (tabListTask != null) {

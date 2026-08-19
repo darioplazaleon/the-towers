@@ -25,6 +25,8 @@ public class ConnectListener implements Listener {
             player.setGameMode(GameMode.SURVIVAL);
         }
 
+        theTowers.getStatsService().touchPlayer(player.getUniqueId(), player.getName());
+
         player.teleport(ConfigManager.getLobby());
     }
 
