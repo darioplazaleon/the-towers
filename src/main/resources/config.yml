@@ -1,4 +1,7 @@
 language: es
+stats:
+  enabled: true
+  min-games-for-top: 10
 required-points: 10
 required-players: 2
 countdown-seconds: 30

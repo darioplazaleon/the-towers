@@ -10,6 +10,9 @@ import org.nanii.thetowers.listener.*;
 import org.nanii.thetowers.manager.ArenaManager;
 import org.nanii.thetowers.manager.ConfigManager;
 import org.nanii.thetowers.sign.ArenaSignManager;
+import org.nanii.thetowers.stats.Database;
+
+import java.sql.SQLException;
 
 public final class TheTowers extends JavaPlugin {
 
@@ -28,6 +31,12 @@ public final class TheTowers extends JavaPlugin {
         signManager.load();
         Bukkit.getScheduler().runTask(this, signManager::refreshAll);
         signManager.startCountdownTask();
+
+        try {
+            new Database(this).open();
+        } catch (SQLException e) {
+            getLogger().severe("Fallo" + e.getMessage());
+        }
 
         Bukkit.getPluginManager().registerEvents(new GameListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectListener(this), this);

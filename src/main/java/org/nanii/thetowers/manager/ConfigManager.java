@@ -28,6 +28,14 @@ public class ConfigManager {
         return config.getString("language", "es");
     }
 
+    public static boolean isStatsEnabled() {
+        return config.getBoolean("stats.enabled", true);
+    }
+
+    public static int getMinGamesForTop() {
+        return config.getInt("stats.min-games-for-top", 10);
+    }
+
     public static int getRequiredPoints() {
         return config.getInt("required-points");
     }
