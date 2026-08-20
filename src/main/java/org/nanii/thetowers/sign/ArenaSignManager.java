@@ -60,7 +60,12 @@ public class ArenaSignManager {
                 continue;
             }
 
+
             signs.put(new SignKey(world, entry.getInt("x"), entry.getInt("y"), entry.getInt("z")), arenaId);
+        }
+
+        for (SignKey key : signs.keySet()) {
+            addTicket(key);
         }
 
         theTowers.getLogger().info("[TT Signs] " + signs.size() + " cartel(es) cargado(s).");
@@ -91,7 +96,9 @@ public class ArenaSignManager {
 
     //REGISTER
     public void register(Block block, int arenaId) {
-        signs.put(SignKey.of(block), arenaId);
+        SignKey key = SignKey.of(block);
+        signs.put(key, arenaId);
+        addTicket(key);
         save();
 
         Arena arena = theTowers.getArenaManager().getArena(arenaId);
@@ -99,7 +106,9 @@ public class ArenaSignManager {
     }
 
     public void unregister(Block block) {
-        if (signs.remove(SignKey.of(block)) != null) {
+        SignKey key = SignKey.of(block);
+        if (signs.remove(key) != null) {
+            removeTicket(key);
             save();
         }
     }
@@ -123,8 +132,10 @@ public class ArenaSignManager {
             Map.Entry<SignKey, Integer> entry = iterator.next();
             if (entry.getValue() != arena.getId()) continue;
 
-            if (!render(entry.getKey(), arena)) {
+            SignKey key = entry.getKey();
+            if (!render(key, arena)) {
                 iterator.remove();
+                removeTicket(key);
                 removed = true;
             }
         }
@@ -198,5 +209,23 @@ public class ArenaSignManager {
 
     private void line(SignSide side, int index, Component component) {
         side.line(index, LangManager.render(component));
+    }
+
+    private void addTicket(SignKey key) {
+        World world = Bukkit.getWorld(key.world());
+        if (world == null) return;
+        world.addPluginChunkTicket(key.x() >> 4, key.z() >> 4, theTowers);
+    }
+
+    private void removeTicket(SignKey key) {
+        World world = Bukkit.getWorld(key.world());
+        if (world == null) return;
+
+        int cx = key.x() >> 4, cz = key.z() >> 4;
+
+        for (SignKey other : signs.keySet()) {
+            if  (other.world().equals(key.world()) && (other.x() >> 4) == cx && (other.z() >> 4) == cz) return;
+        }
+        world.removePluginChunkTicket(cx, cz, theTowers);
     }
 }

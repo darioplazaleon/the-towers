@@ -156,6 +156,8 @@ public class Arena {
         if (state.equals(GameState.RECRUITING) && players.size() >= ConfigManager.getRequiredPlayers()) {
             countdown.start();
         }
+
+        refreshSigns();
     }
 
     public void removePlayer(Player player) {
@@ -177,6 +179,7 @@ public class Arena {
         }
 
         TeamSelectorMenu.refresh(this);
+        refreshSigns();
 
         if (state == GameState.COUNTDOWN && players.size() < ConfigManager.getRequiredPlayers()) {
             sendMessage(Component.translatable("arena.not-enough-players.countdown"));
@@ -203,6 +206,7 @@ public class Arena {
         }
 
         player.sendMessage(Component.translatable("arena.spectating", Argument.numeric("arena", id)));
+        refreshSigns();
     }
 
     public void removeSpectator(Player player) {
@@ -219,6 +223,7 @@ public class Arena {
         player.setGameMode(GameMode.SURVIVAL);
         player.teleport(ConfigManager.getLobby());
         player.clearTitle();
+        refreshSigns();
     }
 
     //INFO
