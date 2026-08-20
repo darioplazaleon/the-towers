@@ -9,12 +9,9 @@ import org.nanii.thetowers.instance.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.listener.*;
 import org.nanii.thetowers.manager.ArenaManager;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.sign.ArenaSignManager;
-import org.nanii.thetowers.stats.Database;
 import org.nanii.thetowers.stats.StatsService;
-
-import java.sql.SQLException;
 
 public final class TheTowers extends JavaPlugin {
 

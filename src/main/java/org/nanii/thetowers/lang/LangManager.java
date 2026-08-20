@@ -7,7 +7,7 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

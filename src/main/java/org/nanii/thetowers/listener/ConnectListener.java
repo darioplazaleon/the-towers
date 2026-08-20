@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 
 public class ConnectListener implements Listener {
 

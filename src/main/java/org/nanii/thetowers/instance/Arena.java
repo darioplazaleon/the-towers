@@ -9,7 +9,7 @@ import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.gui.TeamSelectorMenu;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.sign.ArenaSignManager;
 import org.nanii.thetowers.team.Team;
 import org.nanii.thetowers.team.TeamManager;

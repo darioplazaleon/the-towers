@@ -1,4 +1,4 @@
-package org.nanii.thetowers.manager;
+package org.nanii.thetowers.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

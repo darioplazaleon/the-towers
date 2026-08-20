@@ -2,7 +2,7 @@ package org.nanii.thetowers.stats;
 
 import org.bukkit.Bukkit;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 
 import java.sql.SQLException;
 import java.util.List;

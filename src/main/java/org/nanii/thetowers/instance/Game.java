@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.gui.TeamSelectorItem;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.stats.MatchRecord;
 import org.nanii.thetowers.stats.MatchResult;
 import org.nanii.thetowers.stats.MatchStatus;

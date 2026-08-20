@@ -1,6 +1,6 @@
 package org.nanii.thetowers.stats;
 
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 
 import java.sql.*;
 import java.util.ArrayList;

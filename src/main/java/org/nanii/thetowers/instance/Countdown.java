@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 
 import java.time.Duration;
 

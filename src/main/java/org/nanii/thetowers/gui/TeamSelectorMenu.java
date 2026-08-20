@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.nanii.thetowers.instance.Arena;
 import org.nanii.thetowers.lang.LangManager;
-import org.nanii.thetowers.manager.ConfigManager;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.team.JoinResult;
 import org.nanii.thetowers.team.Team;
 import org.nanii.thetowers.team.TeamManager;

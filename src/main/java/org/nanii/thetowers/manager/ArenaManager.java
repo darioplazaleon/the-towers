@@ -6,6 +6,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.instance.Arena;
 import org.nanii.thetowers.instance.ArenaJoinResult;
 import org.nanii.thetowers.instance.SpectateResult;
