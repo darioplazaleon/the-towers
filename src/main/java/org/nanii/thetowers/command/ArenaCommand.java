@@ -11,9 +11,9 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.instance.Arena;
-import org.nanii.thetowers.instance.ArenaJoinResult;
-import org.nanii.thetowers.instance.SpectateResult;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.ArenaJoinResult;
+import org.nanii.thetowers.arena.SpectateResult;
 import org.nanii.thetowers.lang.LangManager;
 
 import java.util.ArrayList;

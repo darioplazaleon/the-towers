@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.config.ConfigManager;
-import org.nanii.thetowers.instance.Arena;
-import org.nanii.thetowers.instance.ArenaJoinResult;
-import org.nanii.thetowers.instance.SpectateResult;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.ArenaJoinResult;
+import org.nanii.thetowers.arena.SpectateResult;
 
 import java.util.ArrayList;
 import java.util.List;

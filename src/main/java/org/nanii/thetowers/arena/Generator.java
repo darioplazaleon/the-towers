@@ -1,4 +1,4 @@
-package org.nanii.thetowers.instance;
+package org.nanii.thetowers.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

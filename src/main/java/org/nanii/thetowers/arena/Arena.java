@@ -1,4 +1,4 @@
-package org.nanii.thetowers.instance;
+package org.nanii.thetowers.arena;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.translation.Argument;

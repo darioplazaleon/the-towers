@@ -15,8 +15,8 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.instance.Arena;
-import org.nanii.thetowers.instance.ArenaJoinResult;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.ArenaJoinResult;
 
 public class SignListener implements Listener {
 

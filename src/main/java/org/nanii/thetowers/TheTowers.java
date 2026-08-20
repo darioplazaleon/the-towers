@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.nanii.thetowers.command.ArenaCommand;
 import org.nanii.thetowers.command.StatsCommand;
 import org.nanii.thetowers.gui.TeamSelectorItem;
-import org.nanii.thetowers.instance.Arena;
+import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.listener.*;
 import org.nanii.thetowers.manager.ArenaManager;

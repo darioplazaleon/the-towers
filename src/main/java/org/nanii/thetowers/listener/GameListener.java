@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.instance.Arena;
-import org.nanii.thetowers.instance.PointZone;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.PointZone;
 import org.nanii.thetowers.team.Team;
 
 public class GameListener implements Listener {

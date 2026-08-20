@@ -15,7 +15,7 @@ import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.gui.TeamSelectorMenu;
-import org.nanii.thetowers.instance.Arena;
+import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.team.JoinResult;
 import org.nanii.thetowers.team.Team;
 

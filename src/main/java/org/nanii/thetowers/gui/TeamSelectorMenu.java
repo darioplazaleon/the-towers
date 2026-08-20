@@ -12,7 +12,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.nanii.thetowers.instance.Arena;
+import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.team.JoinResult;

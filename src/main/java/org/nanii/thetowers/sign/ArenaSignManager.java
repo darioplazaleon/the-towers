@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.instance.Arena;
+import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 
 import java.io.File;

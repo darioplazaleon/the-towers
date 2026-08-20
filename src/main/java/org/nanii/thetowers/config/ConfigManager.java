@@ -6,9 +6,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.instance.Generator;
-import org.nanii.thetowers.instance.GeneratorType;
-import org.nanii.thetowers.instance.PointZone;
+import org.nanii.thetowers.arena.Generator;
+import org.nanii.thetowers.arena.GeneratorType;
+import org.nanii.thetowers.arena.PointZone;
 
 import java.util.ArrayList;
 import java.util.Collections;

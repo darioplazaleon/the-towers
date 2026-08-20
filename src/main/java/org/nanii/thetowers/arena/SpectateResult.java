@@ -1,18 +1,18 @@
-package org.nanii.thetowers.instance;
+package org.nanii.thetowers.arena;
 
 import net.kyori.adventure.translation.Translatable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public enum ArenaJoinResult implements Translatable {
+public enum SpectateResult implements Translatable {
     OK,
-    ALREADY_IN_ARENA,
     ARENA_NOT_FOUND,
-    IN_PROGRESS,
+    ALREADY_IN_ARENA,
+    NOT_AVAILABLE,
     FULL;
 
-    private final String translationKey = "arena.join." + name().toLowerCase(Locale.ROOT).replace('_', '-');
+    private final String translationKey = "arena.spectate." + name().toLowerCase(Locale.ROOT).replace('_', '-');
 
     @Override
     public @NotNull String translationKey() {
