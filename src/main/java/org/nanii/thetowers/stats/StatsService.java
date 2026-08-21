@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class StatsService {
 
     @FunctionalInterface
-    private interface SqlTask{
+    private interface SqlTask {
         void run() throws SQLException;
     }
 

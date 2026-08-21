@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.nanii.thetowers.TheTowers;
-import org.nanii.thetowers.chat.ChatChannel;
 import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.chat.ChatChannel;
 import org.nanii.thetowers.team.Team;
 
 public class ChatListener implements Listener {

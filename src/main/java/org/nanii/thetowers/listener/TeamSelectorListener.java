@@ -11,13 +11,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.TheTowers;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.gui.TeamSelectorMenu;
-import org.nanii.thetowers.arena.Arena;
-import org.nanii.thetowers.team.TeamJoinResult;
 import org.nanii.thetowers.team.Team;
+import org.nanii.thetowers.team.TeamJoinResult;
 
 public class TeamSelectorListener implements Listener {
 

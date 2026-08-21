@@ -2,14 +2,14 @@ package org.nanii.thetowers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.ArenaManager;
 import org.nanii.thetowers.command.ArenaCommand;
 import org.nanii.thetowers.command.StatsCommand;
+import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.gui.TeamSelectorItem;
-import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.listener.*;
-import org.nanii.thetowers.arena.ArenaManager;
-import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.sign.ArenaSignManager;
 import org.nanii.thetowers.stats.StatsService;
 

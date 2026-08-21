@@ -160,10 +160,10 @@ public class StatsRepository {
     }
 
     public UUID findUuidByName(String name) throws SQLException {
-        try (PreparedStatement statement = database.getConnection().prepareStatement(SELECT_UUID_BY_NAME)){
+        try (PreparedStatement statement = database.getConnection().prepareStatement(SELECT_UUID_BY_NAME)) {
             statement.setString(1, name);
 
-            try (ResultSet rs = statement.executeQuery()){
+            try (ResultSet rs = statement.executeQuery()) {
                 return rs.next() ? UUID.fromString(rs.getString("uuid")) : null;
             }
         }

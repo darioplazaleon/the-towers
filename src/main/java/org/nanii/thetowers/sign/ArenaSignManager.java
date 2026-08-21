@@ -11,9 +11,9 @@ import org.bukkit.block.sign.SignSide;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
-import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.arena.Arena;
+import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.lang.LangManager;
 
 import java.io.File;
@@ -224,7 +224,7 @@ public class ArenaSignManager {
         int cx = key.x() >> 4, cz = key.z() >> 4;
 
         for (SignKey other : signs.keySet()) {
-            if  (other.world().equals(key.world()) && (other.x() >> 4) == cx && (other.z() >> 4) == cz) return;
+            if (other.world().equals(key.world()) && (other.x() >> 4) == cx && (other.z() >> 4) == cz) return;
         }
         world.removePluginChunkTicket(cx, cz, theTowers);
     }

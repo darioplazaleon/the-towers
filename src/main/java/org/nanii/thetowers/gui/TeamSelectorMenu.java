@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.nanii.thetowers.arena.Arena;
-import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.config.ConfigManager;
-import org.nanii.thetowers.team.TeamJoinResult;
+import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.team.Team;
+import org.nanii.thetowers.team.TeamJoinResult;
 import org.nanii.thetowers.team.TeamManager;
 
 import java.util.ArrayList;
