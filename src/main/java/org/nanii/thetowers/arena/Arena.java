@@ -5,7 +5,6 @@ import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.gui.TeamSelectorMenu;

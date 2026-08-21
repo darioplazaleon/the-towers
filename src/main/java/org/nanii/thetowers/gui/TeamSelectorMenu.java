@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.config.ConfigManager;
-import org.nanii.thetowers.team.JoinResult;
+import org.nanii.thetowers.team.TeamJoinResult;
 import org.nanii.thetowers.team.Team;
 import org.nanii.thetowers.team.TeamManager;
 
@@ -82,7 +82,7 @@ public class TeamSelectorMenu implements InventoryHolder {
 
     private ItemStack buildTeamItem(Team team) {
         TeamManager teams = arena.getTeams();
-        JoinResult result = teams.canJoin(viewer.getUniqueId(), team);
+        TeamJoinResult result = teams.canJoin(viewer.getUniqueId(), team);
 
 
         ItemStack item = new ItemStack(team.getMaterial());
@@ -111,7 +111,7 @@ public class TeamSelectorMenu implements InventoryHolder {
         lore.add(statusLine(result));
         meta.lore(lore);
 
-        if (result == JoinResult.ALREADY_IN_TEAM) {
+        if (result == TeamJoinResult.ALREADY_IN_TEAM) {
             meta.setEnchantmentGlintOverride(true);
         }
 
@@ -119,7 +119,7 @@ public class TeamSelectorMenu implements InventoryHolder {
         return item;
     }
 
-    private Component statusLine(JoinResult result) {
+    private Component statusLine(TeamJoinResult result) {
         return switch (result) {
             case OK -> line(Component.translatable("gui.selector.status.ok"));
             case ALREADY_IN_TEAM -> line(Component.translatable("gui.selector.status.already-in-team"));

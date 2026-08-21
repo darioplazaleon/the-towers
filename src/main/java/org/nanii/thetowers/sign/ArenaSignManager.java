@@ -11,7 +11,7 @@ import org.bukkit.block.sign.SignSide;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
-import org.nanii.thetowers.GameState;
+import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;

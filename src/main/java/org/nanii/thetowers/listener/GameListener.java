@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.nanii.thetowers.GameState;
+import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.arena.PointZone;

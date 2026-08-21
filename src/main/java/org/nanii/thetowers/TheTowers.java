@@ -8,7 +8,7 @@ import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.arena.Arena;
 import org.nanii.thetowers.lang.LangManager;
 import org.nanii.thetowers.listener.*;
-import org.nanii.thetowers.manager.ArenaManager;
+import org.nanii.thetowers.arena.ArenaManager;
 import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.sign.ArenaSignManager;
 import org.nanii.thetowers.stats.StatsService;

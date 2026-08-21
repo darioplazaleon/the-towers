@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public enum JoinResult implements Translatable {
+public enum TeamJoinResult implements Translatable {
 
     OK,
     ALREADY_IN_TEAM,

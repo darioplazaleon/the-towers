@@ -56,9 +56,9 @@ public class TeamManager {
 
     //LIMITS
 
-    public JoinResult canJoin(UUID id, Team team) {
+    public TeamJoinResult canJoin(UUID id, Team team) {
         Team current = teams.get(id);
-        if (current == team) return JoinResult.ALREADY_IN_TEAM;
+        if (current == team) return TeamJoinResult.ALREADY_IN_TEAM;
 
         Team other = team.opposite();
 
@@ -66,19 +66,19 @@ public class TeamManager {
         int rival = count(other) - (current == other ? 1 : 0);
 
         if (target > ConfigManager.getTeamSize()) {
-            return JoinResult.TEAM_FULL;
+            return TeamJoinResult.TEAM_FULL;
         }
 
         if (target - rival > ConfigManager.getMaxTeamDifference()) {
-            return JoinResult.WOULD_UNBALANCE;
+            return TeamJoinResult.WOULD_UNBALANCE;
         }
 
-        return JoinResult.OK;
+        return TeamJoinResult.OK;
     }
 
-    public JoinResult tryJoin(Player player, Team team) {
-        JoinResult result = canJoin(player.getUniqueId(), team);
-        if (result == JoinResult.OK) {
+    public TeamJoinResult tryJoin(Player player, Team team) {
+        TeamJoinResult result = canJoin(player.getUniqueId(), team);
+        if (result == TeamJoinResult.OK) {
             set(player, team);
         }
         return result;

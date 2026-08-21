@@ -1,15 +1,11 @@
-package org.nanii.thetowers.manager;
+package org.nanii.thetowers.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.config.ConfigManager;
-import org.nanii.thetowers.arena.Arena;
-import org.nanii.thetowers.arena.ArenaJoinResult;
-import org.nanii.thetowers.arena.SpectateResult;
 
 import java.util.ArrayList;
 import java.util.List;

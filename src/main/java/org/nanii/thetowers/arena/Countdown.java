@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
-import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.config.ConfigManager;
 

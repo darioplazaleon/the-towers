@@ -1,4 +1,4 @@
-package org.nanii.thetowers;
+package org.nanii.thetowers.arena;
 
 import net.kyori.adventure.translation.Translatable;
 import org.jetbrains.annotations.NotNull;

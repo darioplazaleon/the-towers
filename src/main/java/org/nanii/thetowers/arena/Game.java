@@ -7,7 +7,6 @@ import net.kyori.adventure.text.minimessage.translation.Argument;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.nanii.thetowers.GameState;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.config.ConfigManager;
 import org.nanii.thetowers.stats.MatchRecord;

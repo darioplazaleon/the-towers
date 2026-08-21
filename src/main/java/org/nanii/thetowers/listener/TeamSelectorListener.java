@@ -11,12 +11,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.nanii.thetowers.GameState;
+import org.nanii.thetowers.arena.GameState;
 import org.nanii.thetowers.TheTowers;
 import org.nanii.thetowers.gui.TeamSelectorItem;
 import org.nanii.thetowers.gui.TeamSelectorMenu;
 import org.nanii.thetowers.arena.Arena;
-import org.nanii.thetowers.team.JoinResult;
+import org.nanii.thetowers.team.TeamJoinResult;
 import org.nanii.thetowers.team.Team;
 
 public class TeamSelectorListener implements Listener {
@@ -71,9 +71,9 @@ public class TeamSelectorListener implements Listener {
         Team team = TeamSelectorMenu.teamAt(e.getRawSlot());
         if (team == null) return;
 
-        JoinResult result = menu.getArena().getTeams().tryJoin(player, team);
+        TeamJoinResult result = menu.getArena().getTeams().tryJoin(player, team);
 
-        if (result == JoinResult.OK) {
+        if (result == TeamJoinResult.OK) {
             player.sendMessage(Component.translatable("team.join.success", Argument.component("team", team.displayName())));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.4f);
             player.closeInventory();
